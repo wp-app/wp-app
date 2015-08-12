@@ -2,6 +2,8 @@
 
 An open source, customizable mobile app for WordPress management.
 
+![Preview Image](wp-app-mockup1.jpg)
+
 ## The Idea
 
 Create a customizable mobile app for managing self-hosted WordPress sites.
