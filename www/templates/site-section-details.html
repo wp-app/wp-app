@@ -1,0 +1,31 @@
+<ion-view>
+	<ion-nav-title>
+	{{title}}
+	</ion-nav-title>
+  	<ion-content>
+	<div class="card">
+		<div class="item item-body">
+			<h2 ng-bind-html="data.title.rendered"></h2>
+			<p ng-if="data.content.rendered" ng-bind-html="data.content.rendered"></p>
+			<p ng-if="data.author_name" ng-bind-html="data.content.rendered"></p>
+			<p ng-if="data.author_name" ng-bind-html="data.author_name"></p>
+			<img ng-if="data.media_details" src="{{data.media_details.sizes.medium.source_url}}" />
+		</div>
+
+		<div class="item tabs tabs-secondary tabs-icon-left">
+		    <a class="tab-item" href="#">
+		      <i class="icon ion-edit"></i>
+		      Edit
+		    </a>
+		    <a class="tab-item" href="#">
+		      <i class="icon ion-forward"></i>
+		      View
+		    </a>
+		    <a class="tab-item" href="#" ng-click="deleteComment()">
+		      <i class="icon ion-ios-close-empty"></i>
+		      Delete
+		    </a>
+		  </div>
+	</div>
+    </ion-content>
+</ion-view>

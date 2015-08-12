@@ -1,0 +1,15 @@
+<ion-view>
+	<ion-nav-title>
+	{{site.title}}
+	</ion-nav-title>
+  <ion-content>
+  <div ng-bind-html="content"></div>
+  	<ion-list>
+		<ion-item class="item-icon-left item-icon-right" ng-repeat="section in sitesections" href="#/app/sites/{{id}}/{{section.title}}">
+			<i class="icon {{section.icon}} site-icon"></i>
+			<h3>{{section.title}}</h3>
+			<i class="icon ion-chevron-right icon-accessory"></i>
+		</ion-item>
+	</ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,26 @@
+<ion-view view-title="Sites">
+
+	<ion-nav-buttons side="right">
+	    <button class="button button-icon ion-plus site-plus-icon" ng-click="sitemodal.show()">
+	    </button>
+	</ion-nav-buttons>
+
+	<ion-content>
+	<ion-list>
+		<ion-item class="item-icon-right" ng-repeat="site in sites track by $index" href="#/app/sites/{{site.id}}">
+			<h3>{{site.title}}</h3>
+			<p class="site-description">{{site.description}}</p>
+			<i class="icon ion-chevron-right icon-accessory"></i>
+		</ion-item>
+	</ion-list>
+
+	<p class="padding" ng-bind-html="message"></p>
+
+	<ion-infinite-scroll
+	ng-if="moreDataExists()"
+	on-infinite="loadMore()"
+	distance="1%">
+	</ion-infinite-scroll>
+
+	</ion-content>
+</ion-view>
