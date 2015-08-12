@@ -28,19 +28,19 @@ To see this project in action, download the wp-app/www folder, and open wp-app/w
 
 ## Technical Details
 
-The app is a hybrid app built with the Ionic Framework, which uses AngularJS.
+The app is a hybrid app built with the Ionic Framework, which uses AngularJS. It will be compiled into a native app for the app stores using Phonegap.
 
 The app accesses the WP-API on a self-hosted WordPress website.
 
-### Why not a fully native app?
+### Why Ionic + Phonegap?
 
-The WordPress community is made up of web developers, so building the app with web technologies allows more people to participate.  The Ionic Framework creates fast, performant apps.  While fully native apps have the best performance, hybrid apps can still be incredibly good if built well.
+The WordPress community is made up of web developers, so building the app with web technologies allows more people to participate.  The Ionic Framework creates fast, performant apps.
 
 ### What will the app cost?
 
 The app itself will always be free, there will never be a mandatory cost to use the app.
 
-There will be costs associated with push notifications, hosting, etc. that mean this app will need to make revenue at some point.  
+There will be costs associated with push notifications, hosting, etc. that mean this app will need to make revenue at some point, or figure out some sort of sponsorship.  
 
 The idea is to create paid plugins that add functionality to the app worth paying for, and charging for those plugins.  No core functionality will cost money, only add-ons.  For example, a plugin developer could charge for a plugin that adds their CPT to the app.
 
