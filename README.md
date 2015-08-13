@@ -26,6 +26,27 @@ This project is intended to be by the community, for the community.
 
 To see this project in action, download the wp-app/www folder, and open wp-app/www/index.html in Safari or Chrome. Click '+' to add a new site, the site must have the WP-API v2 installed and activated: [https://wordpress.org/plugins/rest-api/](https://wordpress.org/plugins/rest-api/)
 
+### Interacting with the WP-API
+
+The WP-API has lots of methods to add data to it. Here's a simple example of adding a custom endpoint to add a page to the app:
+
+	add_action( 'rest_api_init', function () {
+	    register_rest_route( 'wp-app/v1', '/pages', array(
+	        'methods' => 'GET',
+	        'callback' => 'my_app_pages',
+	    ) );
+	} );
+
+	function my_app_pages() {
+		$array = array(
+			'title' => 'My Plugin',
+			'icon' => 'ion-ios-information-outline'
+		);
+		return $array;
+	}
+
+If you add http://scottbolinger.com/dev to the app, you'll see a page called My Plugin. This of course needs a lot more refinement.
+
 ## Technical Details
 
 The app is a hybrid app built with the Ionic Framework, which uses AngularJS. It will be compiled into a native app for the app stores using Phonegap.

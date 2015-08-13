@@ -88,7 +88,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage ) {
+.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader ) {
 
   // Controller for single site detail page
 
@@ -101,8 +101,20 @@ angular.module('wpApp.controllers', [])
   // Default sections, can be passed in from somewhere else
   $scope.sitesections = [{'title': 'Comments', 'icon':'ion-ios-chatbubble-outline'}, {'title': 'Posts', 'icon':'ion-ios-browsers-outline' },{'title': 'Pages', 'icon':'ion-ios-paper-outline'},{'title': 'Media', 'icon':'ion-ios-cloud-outline'},{'title': 'Settings', 'icon':'ion-ios-gear-outline'}];
 
+  var url = JSON.parse( $localstorage.get('site' + $scope.id ) ).url;
+
+  var dataURL = url + '/wp-json/wp-app/v1/pages/?' + $rootScope.callback;
+
   // Example of adding a section
-  $scope.sitesections.push({ 'title': 'Custom', 'icon':'ion-ios-information-outline' });
+  DataLoader.get( dataURL ).success(function(data, status, headers, config) {
+        console.log(data);
+        $scope.sitesections.push({ 'title': data.title, 'icon': data.icon });
+        $ionicLoading.hide();
+      })
+      .error(function(data, status, headers, config) {
+        $ionicLoading.hide();
+        console.log('Error');
+    });
 
 })
 
