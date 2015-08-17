@@ -75,7 +75,7 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
   })
 
   .state('app.sectiondetail', {
-    url: "/sites/:siteId/:section/:itemId",
+    url: "/sites/:siteId/:section/:itemId/:index",
     views: {
       'sites-view': {
         templateUrl: "templates/site-section-details.html",

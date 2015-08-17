@@ -22,17 +22,23 @@ angular.module('wpApp.controllers', [])
 
 .controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading ) {
 
-  // Sites view
+  // Sites view: templates/sites.html
 
-  $scope.sites = [];
+  // console.log( $localstorage.getObject( 'sites' ) );
 
-  angular.forEach(window.localStorage, function(value, key) {
-    // Search local storage for existing sites
-    var sub = key.substring(0, 4);
-    if( sub == 'site' ) {
-      $scope.sites.push( JSON.parse(value) );
-    }
-  });
+  if( $localstorage.getObject( 'sites' ).length > 1 ) {
+    $scope.sites = $localstorage.getObject( 'sites' );
+  } else {
+    $scope.sites = [];
+  }
+
+  // angular.forEach(window.localStorage, function(value, key) {
+  //   // Search local storage for existing sites
+  //   var sub = key.substring(0, 4);
+  //   if( sub == 'site' ) {
+  //     $scope.sites.push( JSON.parse(value) );
+  //   }
+  // });
 
   // Add a site modal
   $ionicModal.fromTemplateUrl('templates/add-site-modal.html', {
@@ -63,7 +69,10 @@ angular.module('wpApp.controllers', [])
         var siteID = $rootScope.increment();
         var site = { id: siteID, title: data.name, description: data.description, url: u.url, username: u.username, password: u.password };
         $scope.sites.push( site );
-        $localstorage.set('site' + siteID, JSON.stringify( site ) );
+        // Create sites object for sites.html list page
+        $localstorage.setObject( 'sites', $scope.sites );
+        // Store site[id] object for later use
+        $localstorage.setObject('site' + siteID, site );
         $ionicLoading.hide();
       })
       .error(function(data, status, headers, config) {
@@ -78,9 +87,9 @@ angular.module('wpApp.controllers', [])
     
   };
 
-  console.log( $scope.sites.length );
+  // console.log( $scope.sites );
 
-  if( $scope.sites.length < 1 ) {
+  if( $scope.sites != 'undefined'  ) {
     $scope.message = 'Click + to add a site.';
   } else {
     $scope.message = '';
@@ -88,9 +97,9 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader ) {
+.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader, $state ) {
 
-  // Controller for single site detail page
+  // Controller for single site detail page. templates/site.html
 
   // Site ID
   $scope.id = $stateParams.siteId;
@@ -98,16 +107,16 @@ angular.module('wpApp.controllers', [])
   // Example data
   $scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">Your Site</h2>';
 
-  // Default sections, can be passed in from somewhere else
-  $scope.sitesections = [{'title': 'Comments', 'icon':'ion-ios-chatbubble-outline'}, {'title': 'Posts', 'icon':'ion-ios-browsers-outline' },{'title': 'Pages', 'icon':'ion-ios-paper-outline'},{'title': 'Media', 'icon':'ion-ios-cloud-outline'},{'title': 'Settings', 'icon':'ion-ios-gear-outline'}];
+  var url = $localstorage.getObject('site' + $scope.id ).url;
 
-  var url = JSON.parse( $localstorage.get('site' + $scope.id ) ).url;
+  // Default sections, can be passed in from somewhere else
+  $scope.sitesections = [{'title': 'Comments', 'icon':'ion-ios-chatbubble-outline', 'route':'wp/v2/comments/' }, {'title': 'Posts', 'icon':'ion-ios-browsers-outline', 'route':'wp/v2/posts/' },{'title': 'Pages', 'icon':'ion-ios-paper-outline'},{'title': 'Media', 'icon':'ion-ios-cloud-outline'},{'title': 'Settings', 'icon':'ion-ios-gear-outline'}];
 
   var dataURL = url + '/wp-json/wp-app/v1/pages/?' + $rootScope.callback;
 
   // Example of adding a section
   DataLoader.get( dataURL ).success(function(data, status, headers, config) {
-        console.log(data);
+        //console.log(data);
         $scope.sitesections.push({ 'title': data.title, 'icon': data.icon });
         $ionicLoading.hide();
       })
@@ -120,31 +129,49 @@ angular.module('wpApp.controllers', [])
 
 .controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout ) {
 
-  // Individual site data (posts, comments, pages, etc). Should be broken into different controllers and templates for more fine-grained control
+  // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
-  // $ionicLoading.show({
-  //   noBackdrop: true
-  // });
+  // console.log($stateParams);
 
   $scope.title = $stateParams.section.toLowerCase();
 
   $scope.id = $stateParams.siteId;
 
-  var url = JSON.parse( $localstorage.get('site' + $scope.id ) ).url;
+  var url = $localstorage.getObject('site' + $scope.id ).url;
 
   var dataURL = url + '/wp-json/wp/v2/' + $scope.title;
+
+  // TODO: Change dataURL/loadData so we can get data from different endpoints too
+
+  var siteData = $localstorage.getObject('site' + $scope.id + $scope.title );
 
   // Gets API data
   $scope.loadData = function() {
 
-    console.log('Loading data...');
+    // If we have local data saved, use that. Otherwise fetch data.
+    if( siteData.length > 1 ) {
+      // breaks on load more because $paged variable is wrong
+      $scope.data = siteData;
+      console.log('Loaded saved data only');
+      console.dir(siteData);
+      return;
+    }
+
+    $ionicLoading.show({
+      noBackdrop: true
+    });
+
+    console.log('Fetching new data from API...');
 
     DataLoader.get( dataURL + '?' + $rootScope.callback ).success(function(data, status, headers, config) {
         $scope.data = data;
+        $localstorage.setObject('site' + $scope.id + $scope.title, data );
+        $ionicLoading.hide();
         console.dir(data);
       }).
       error(function(data, status, headers, config) {
         console.log('Error');
+        $ionicLoading.hide();
     });
 
   }
@@ -152,6 +179,7 @@ angular.module('wpApp.controllers', [])
   // Load posts on page load
   $scope.loadData();
 
+  // TODO: Paged variable can't always start at 2, since we have locally stored data
   paged = 2;
   $scope.moreItems = true;
 
@@ -173,6 +201,8 @@ angular.module('wpApp.controllers', [])
         angular.forEach( data, function( value, key ) {
           $scope.data.push(value);
         });
+
+        $localstorage.setObject('site' + $scope.id + $scope.title, $scope.data );
 
         if( data.length <= 0 ) {
           $scope.moreItems = false;
@@ -214,31 +244,15 @@ angular.module('wpApp.controllers', [])
 
 .controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage ) {
 
-  // Item detail view (single post, comment, etc.)
-
-  $ionicLoading.show({
-    noBackdrop: true
-  });
+  // Item detail view (single post, comment, etc.) templates/site-section-details.html
 
   $scope.siteID = $stateParams.siteId;
   $scope.section = $stateParams.section;
   $scope.itemID = $stateParams.itemId;
 
-  var site = JSON.parse( $localstorage.get('site' + $stateParams.siteId ) );
-
-  var url = site.url;
-
-  var itemURL = url + '/wp-json/wp/v2/' + $stateParams.section + '/' + $stateParams.itemId;
-
-  // Get our item. Shouldn't need to do this, need to cache API and pull from cache
-  DataLoader.get( itemURL + '?' + $rootScope.callback ).success(function(data, status, headers, config) {
-      $scope.data = data;
-      $ionicLoading.hide();
-    }).
-    error(function(data, status, headers, config) {
-      console.log('error');
-      $ionicLoading.hide();
-  });
+  // Get data from locally stored object.
+  // TODO: Need fallback to hit API if no data stored locally
+  $scope.siteData = $localstorage.getObject('site' + $scope.siteID + $scope.section )[$stateParams.index];
 
   // Not working yet
   $scope.deleteComment = function() {
