@@ -96,7 +96,7 @@ angular.module('wpApp.controllers', [])
 
   console.log( $scope.sites.length );
 
-  if( $scope.sites.length > 1 ) {
+  if( $scope.sites.length >= 1 ) {
     $scope.message = '';
   } else {
     $scope.message = 'Click + to add a site.';
@@ -126,10 +126,12 @@ angular.module('wpApp.controllers', [])
   // Site ID
   $scope.id = $stateParams.siteId;
 
-  // Example data
-  $scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">Your Site</h2>';
+  var site = $localstorage.getObject('site' + $scope.id );
 
-  var url = $localstorage.getObject('site' + $scope.id ).url;
+  // Example data
+  $scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">' + site.title + '</h2>';
+
+  var url = site.url;
 
   // Default sections, can be passed in from somewhere else
   $scope.sitesections = [{'title': 'Comments', 'icon':'ion-ios-chatbubble-outline', 'route':'wp/v2/comments/' }, {'title': 'Posts', 'icon':'ion-ios-browsers-outline', 'route':'wp/v2/posts/' },{'title': 'Pages', 'icon':'ion-ios-paper-outline'},{'title': 'Media', 'icon':'ion-ios-cloud-outline'},{'title': 'Settings', 'icon':'ion-ios-gear-outline'}];
