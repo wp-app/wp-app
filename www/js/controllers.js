@@ -276,6 +276,7 @@ angular.module('wpApp.controllers', [])
   $scope.siteID = $stateParams.siteId;
   $scope.slug = $stateParams.slug;
   $scope.itemID = $stateParams.itemId;
+  $scope.site = $localstorage.getObject('site' + $scope.siteID );
 
   // Get data from locally stored object.
   // TODO: Need fallback to hit API if no data stored locally
@@ -284,9 +285,11 @@ angular.module('wpApp.controllers', [])
   // Not working yet
   $scope.deleteComment = function() {
     // Not working, possible CORS error?
-    var itemURL = url + '/wp-json/wp/v2/' + $scope.slug + '/' + $stateParams.itemId;
+    var itemURL = $scope.site.url + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
 
-    DataLoader.delete( site.username, site.password, itemURL ).success(function(data, status, headers, config) {
+    console.log(itemURL);
+
+    DataLoader.delete( $scope.site.username, $scope.site.password, itemURL ).success(function(data, status, headers, config) {
       console.dir(data);
     }).
     error(function(data, status, headers, config) {
