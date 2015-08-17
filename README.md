@@ -26,7 +26,7 @@ This project is intended to be by the community, for the community.
 
 To see this project in action, download the wp-app/www folder, and open wp-app/www/index.html in Safari or Chrome. Click '+' to add a new site, the site must have the WP-API v2 installed and activated: [https://wordpress.org/plugins/rest-api/](https://wordpress.org/plugins/rest-api/)
 
-For now, just enter a site URL without the trailing slash, no user/pass needed.
+For now, just enter a site URL, no user/pass needed.
 
 ### Interacting with the WP-API
 

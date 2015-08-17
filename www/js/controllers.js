@@ -46,6 +46,13 @@ angular.module('wpApp.controllers', [])
   }).then(function(sitemodal) {
     $scope.sitemodal = sitemodal;
   });
+
+  $scope.stripTrailingSlash = function(str) {
+    if(str.substr(-1) == '/') {
+        return str.substr(0, str.length - 1);
+    }
+    return str;
+  }
   
   $scope.createSite = function(u) { 
 
@@ -60,14 +67,14 @@ angular.module('wpApp.controllers', [])
       noBackdrop: true
     });
 
-    var siteURL = u.url + '/wp-json/';
+    var siteURL = $scope.stripTrailingSlash( u.url );
 
-    var siteApi = siteURL + '?' + $rootScope.callback;
+    var siteApi = siteURL + '/wp-json/' + '?' + $rootScope.callback;
 
     DataLoader.get( siteApi ).success(function(data, status, headers, config) {
 
         var siteID = $rootScope.increment();
-        var site = { id: siteID, title: data.name, description: data.description, url: u.url, username: u.username, password: u.password };
+        var site = { id: siteID, title: data.name, description: data.description, url: siteURL, username: u.username, password: u.password };
         $scope.sites.push( site );
         // Create sites object for sites.html list page
         $localstorage.setObject( 'sites', $scope.sites );
@@ -98,10 +105,16 @@ angular.module('wpApp.controllers', [])
   $scope.onItemDelete = function(item) {
 
     $scope.sites.splice($scope.sites.indexOf(item), 1);
-    console.log( $scope.sites.indexOf(item) );
+    console.log( item.id );
     $localstorage.setObject( 'sites', $scope.sites );
 
-    // TODO: go find all stored items for that site and delete them
+    angular.forEach( window.localStorage, function( value, key ) {
+      var sub = key.substring(0, 5);
+      console.log(sub);
+      if( sub == 'site' + item.id ) {
+        window.localStorage.removeItem(key);
+      }
+    });
   }
 
 })
