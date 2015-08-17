@@ -94,7 +94,6 @@ angular.module('wpApp.controllers', [])
     
   };
 
-  console.log( $scope.sites.length );
 
   if( $scope.sites.length >= 1 ) {
     $scope.message = '';
@@ -134,14 +133,14 @@ angular.module('wpApp.controllers', [])
   var url = site.url;
 
   // Default sections, can be passed in from somewhere else
-  $scope.sitesections = [{'title': 'Comments', 'icon':'ion-ios-chatbubble-outline', 'route':'wp/v2/comments/' }, {'title': 'Posts', 'icon':'ion-ios-browsers-outline', 'route':'wp/v2/posts/' },{'title': 'Pages', 'icon':'ion-ios-paper-outline'},{'title': 'Media', 'icon':'ion-ios-cloud-outline'},{'title': 'Settings', 'icon':'ion-ios-gear-outline'}];
+  $scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'},{'title': { 'rendered': 'Media' }, 'route':'/wp/v2/media/', 'icon':'ion-ios-cloud-outline'},{'title': { 'rendered': 'Settings' }, 'icon':'ion-ios-gear-outline'}];
 
-  var dataURL = url + '/wp-json/wp-app/v1/pages/?' + $rootScope.callback;
+  var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
 
   // Example of adding a section
   DataLoader.get( dataURL ).success(function(data, status, headers, config) {
-        //console.log(data);
-        $scope.sitesections.push({ 'title': data.title, 'icon': data.icon });
+        console.log( data );
+        $scope.sitesections.push({ 'title': { 'rendered': data.title.rendered }, 'icon': data.icon, 'route': data.route });
         $ionicLoading.hide();
       })
       .error(function(data, status, headers, config) {
@@ -149,25 +148,29 @@ angular.module('wpApp.controllers', [])
         console.log('Error');
     });
 
+  // Gets the API route from the link in site.html, which we use in SiteSectionCtrl
+  $scope.apiRoute = function(route) {
+    $rootScope.route = route;
+  }
+
 })
 
 .controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout ) {
 
   // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
-  // console.log($stateParams);
-
-  $scope.title = $stateParams.section.toLowerCase();
+  // Get slug such as 'comments' from our route, to use to fetch data
+  var slug = $rootScope.route.split('/');
+  var slugindex = $rootScope.route.split('/').length - 2;
+  $scope.slug = slug[slugindex];
 
   $scope.id = $stateParams.siteId;
 
   var url = $localstorage.getObject('site' + $scope.id ).url;
 
-  var dataURL = url + '/wp-json/wp/v2/' + $scope.title;
+  var dataURL = url + '/wp-json' + $rootScope.route;
 
-  // TODO: Change dataURL/loadData so we can get data from different endpoints too
-
-  var siteData = $localstorage.getObject('site' + $scope.id + $scope.title );
+  var siteData = $localstorage.getObject('site' + $scope.id + $scope.slug );
 
   // Gets API data
   $scope.loadData = function() {
@@ -189,7 +192,7 @@ angular.module('wpApp.controllers', [])
 
     DataLoader.get( dataURL + '?' + $rootScope.callback ).success(function(data, status, headers, config) {
         $scope.data = data;
-        $localstorage.setObject('site' + $scope.id + $scope.title, data );
+        $localstorage.setObject('site' + $scope.id + $scope.slug, data );
         $ionicLoading.hide();
         console.dir(data);
       }).
@@ -271,17 +274,17 @@ angular.module('wpApp.controllers', [])
   // Item detail view (single post, comment, etc.) templates/site-section-details.html
 
   $scope.siteID = $stateParams.siteId;
-  $scope.section = $stateParams.section;
+  $scope.slug = $stateParams.slug;
   $scope.itemID = $stateParams.itemId;
 
   // Get data from locally stored object.
   // TODO: Need fallback to hit API if no data stored locally
-  $scope.siteData = $localstorage.getObject('site' + $scope.siteID + $scope.section )[$stateParams.index];
+  $scope.siteData = $localstorage.getObject('site' + $scope.siteID + $scope.slug )[$stateParams.index];
 
   // Not working yet
   $scope.deleteComment = function() {
     // Not working, possible CORS error?
-    var itemURL = url + '/wp-json/wp/v2/' + $stateParams.section + '/' + $stateParams.itemId;
+    var itemURL = url + '/wp-json/wp/v2/' + $scope.slug + '/' + $stateParams.itemId;
 
     DataLoader.delete( site.username, site.password, itemURL ).success(function(data, status, headers, config) {
       console.dir(data);
