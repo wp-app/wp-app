@@ -24,9 +24,9 @@ angular.module('wpApp.controllers', [])
 
   // Sites view: templates/sites.html
 
-  // console.log( $localstorage.getObject( 'sites' ) );
+  // console.log( $localstorage.getObject( 'sites' ).length );
 
-  if( $localstorage.getObject( 'sites' ).length > 1 ) {
+  if( $localstorage.getObject( 'sites' ).length >= 1 ) {
     $scope.sites = $localstorage.getObject( 'sites' );
   } else {
     $scope.sites = [];
@@ -87,12 +87,21 @@ angular.module('wpApp.controllers', [])
     
   };
 
-  // console.log( $scope.sites );
+  console.log( $scope.sites.length );
 
-  if( $scope.sites != 'undefined'  ) {
-    $scope.message = 'Click + to add a site.';
-  } else {
+  if( $scope.sites.length > 1 ) {
     $scope.message = '';
+  } else {
+    $scope.message = 'Click + to add a site.';
+  }
+
+  $scope.onItemDelete = function(item) {
+
+    $scope.sites.splice($scope.sites.indexOf(item), 1);
+    console.log( $scope.sites.indexOf(item) );
+    $localstorage.setObject( 'sites', $scope.sites );
+
+    // TODO: go find all stored items for that site and delete them
   }
 
 })
