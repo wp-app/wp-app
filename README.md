@@ -33,21 +33,51 @@ For now, just enter a site URL, no user/pass needed.
 The WP-API has lots of methods to add data to it. Here's a simple example of adding a custom endpoint to add a page to the app:
 
 	add_action( 'rest_api_init', function () {
-	    register_rest_route( 'wp-app/v1', '/pages', array(
-	        'methods' => 'GET',
-	        'callback' => 'my_app_pages',
-	    ) );
-	} );
 
-	function my_app_pages() {
+		// This route adds a top level section for your plugin. url: mysite.com/wp-json/wp-app/v1/app/
+		register_rest_route( 'wp-app/v1', '/app', array(
+	        'methods' => 'GET',
+	        'callback' => 'my_app_routes',
+	    ) );
+		
+		// This route lists your custom content. url: mysite.com/wp-json/wp-app/v1/apppages/
+	    register_rest_route( 'wp-app/v1', '/apppages', array(
+	        'methods' => 'GET',
+	        'callback' => 'my_app_page_list',
+	    ) );
+
+	} );
+	
+	// The custom top level section that will appear in the app
+	function my_app_routes() {
 		$array = array(
-			'title' => 'My Plugin',
-			'icon' => 'ion-ios-information-outline'
+			'title' => array( 'rendered' => 'My Plugin' ),
+			'icon' => 'ion-ios-information-outline',
+			'route' => '/wp-app/v1/apppages/'
+		);
+		return $array;
+	}
+	
+	// The actual content inside our custom section
+	function my_app_page_list() {
+		$array = array( 
+			array(
+				'id' => 1,
+				'title' => array( 'rendered' => 'My Plugin Page' ),
+				'content' => array( 'rendered' => 'Here is my custom content.' ),
+				'icon' => 'ion-ios-information-outline'
+			),
+			array(
+				'id' => 2,
+				'title' => array( 'rendered' => 'Another Page' ),
+				'content' => array( 'rendered' => 'More custom content.' ),
+				'icon' => 'ion-ios-information-outline'
+			),
 		);
 		return $array;
 	}
 
-If you add http://scottbolinger.com/dev to the app, you'll see a page called My Plugin. This of course needs a lot more refinement.
+To see this in action, add http://scottbolinger.com/dev to the app (no user/pass needed). You'll see a section called My Plugin, and the page list inside that section.
 
 ## Technical Details
 
