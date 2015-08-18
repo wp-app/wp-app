@@ -5,7 +5,7 @@
   <ion-content>
   <div ng-bind-html="content"></div>
   	<ion-list>
-		<ion-item class="item-icon-left item-icon-right" ng-repeat="section in sitesections" href="#/app/sites/{{id}}/section" ng-click="apiRoute('{{section.route}}')">
+		<ion-item class="item-icon-left item-icon-right" ng-repeat="section in sitesections" href="#/app/sites/{{id}}/{{slug}}" ng-click="apiRoute('{{section.route}}')">
 			<i class="icon {{section.icon}} site-icon"></i>
 			<h3>{{section.title.rendered}}</h3>
 			<i class="icon ion-chevron-right icon-accessory"></i>

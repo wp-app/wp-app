@@ -65,7 +65,7 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
   })
 
   .state('app.sitepage', {
-    url: "/sites/:siteId/section",
+    url: "/sites/:siteId/:slug",
     views: {
       'sites-view': {
         templateUrl: "templates/site-section.html",
@@ -75,7 +75,7 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
   })
 
   .state('app.sectiondetail', {
-    url: "/sites/:siteId/section/:slug/:index",
+    url: "/sites/:siteId/:slug/:itemId",
     views: {
       'sites-view': {
         templateUrl: "templates/site-section-details.html",

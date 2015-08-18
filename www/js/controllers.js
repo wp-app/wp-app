@@ -135,7 +135,7 @@ angular.module('wpApp.controllers', [])
         $ionicLoading.hide();
       }, function(response) {
         $ionicLoading.hide();
-        console.log('Error');
+        console.log('No custom site sections to get.');
     });
 
   // Gets the API route from the link in site.html, which we use in SiteSectionCtrl
@@ -156,23 +156,10 @@ angular.module('wpApp.controllers', [])
 
   $scope.id = $stateParams.siteId;
 
-  var url = $localstorage.getObject('site' + $scope.id ).url;
-
-  var dataURL = url + '/wp-json' + $rootScope.route;
-
-  var siteData = $localstorage.getObject('site' + $scope.id + $scope.slug );
+  var dataURL = $localstorage.getObject('site' + $scope.id ).url + '/wp-json' + $rootScope.route;
 
   // Gets API data
   $scope.loadData = function() {
-
-    // If we have local data saved, use that. Otherwise fetch data.
-    if( siteData.length > 1 ) {
-      // breaks on load more because $paged variable is wrong
-      $scope.data = siteData;
-      console.log('Loaded saved data only');
-      console.dir(siteData);
-      return;
-    }
 
     $ionicLoading.show({
       noBackdrop: true
@@ -181,13 +168,15 @@ angular.module('wpApp.controllers', [])
     console.log('Fetching new data from API...');
 
     DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+
         $scope.data = response.data;
-        $localstorage.setObject('site' + $scope.id + $scope.slug, response.data );
         $ionicLoading.hide();
-        console.dir(response.data);
+
       }, function(response) {
+
         console.log('Error');
         $ionicLoading.hide();
+
     });
 
   }
@@ -195,7 +184,6 @@ angular.module('wpApp.controllers', [])
   // Load posts on page load
   $scope.loadData();
 
-  // TODO: Paged variable can't always start at 2, since we have locally stored data
   paged = 2;
   $scope.moreItems = true;
 
@@ -206,9 +194,9 @@ angular.module('wpApp.controllers', [])
       return;
     }
 
-    console.log('loading more...');
-
     var pg = paged++;
+
+    console.log('loading more...' + pg );
 
     $timeout(function() {
 
@@ -218,14 +206,12 @@ angular.module('wpApp.controllers', [])
           $scope.data.push(value);
         });
 
-        $localstorage.setObject('site' + $scope.id + $scope.title, $scope.data );
-
         if( response.data.length <= 0 ) {
           $scope.moreItems = false;
         }
       }, function(response) {
         $scope.moreItems = false;
-        console.log('error');
+        console.log('Load more error');
       });
 
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -265,10 +251,30 @@ angular.module('wpApp.controllers', [])
   $scope.slug = $stateParams.slug;
   $scope.itemID = $stateParams.itemId;
   $scope.site = $localstorage.getObject('site' + $scope.siteID );
+  var url = $scope.site.url;
+
+  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
 
   // Get data from locally stored object.
-  // TODO: Need fallback to hit API if no data stored locally
-  $scope.siteData = $localstorage.getObject('site' + $scope.siteID + $scope.slug )[$stateParams.index];
+  var itemExists = $localstorage.getObject('site' + $scope.siteID + $scope.slug + $scope.itemID );
+
+  if( JSON.stringify( itemExists ) === '{}' ) {
+
+    // Item doesn't exists, so go get it
+    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+        $scope.siteData = response.data;
+        $localstorage.setObject('site' + $scope.siteID + $scope.slug + $scope.itemID, response.data );
+        $ionicLoading.hide();
+        console.dir(response.data);
+      }, function(response) {
+        console.log('Error');
+        $ionicLoading.hide();
+    });
+
+  } else {
+    // Item exists, use localStorage
+    $scope.siteData = itemExists;
+  }
 
   // Not working yet
   $scope.deleteComment = function() {
