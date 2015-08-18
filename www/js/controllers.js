@@ -32,14 +32,6 @@ angular.module('wpApp.controllers', [])
     $scope.sites = [];
   }
 
-  // angular.forEach(window.localStorage, function(value, key) {
-  //   // Search local storage for existing sites
-  //   var sub = key.substring(0, 4);
-  //   if( sub == 'site' ) {
-  //     $scope.sites.push( JSON.parse(value) );
-  //   }
-  // });
-
   // Add a site modal
   $ionicModal.fromTemplateUrl('templates/add-site-modal.html', {
     scope: $scope

@@ -131,7 +131,9 @@ Minimal features: Multiple site support, CRUD comments, GET/DELETE posts/media/p
 
 ## How to Contribute
 
-Join our Slack channel and introduce yourself: wp-app.slack.com
+We are looking for developers familiar with AngularJS and the WP-API. We also encourage anyone who is interested to join the conversation on Slack and put in your 2 cents.
+
+Our Slack channel is: wp-app.slack.com. Ping [@scottbolinger](https://twitter.com/scottbolinger) on twitter with your email to request an invitation.
 
 The first step is just to make some plans, then write them out and assign them.
 
