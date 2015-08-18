@@ -63,18 +63,17 @@ angular.module('wpApp.controllers', [])
 
     var siteApi = siteURL + '/wp-json/' + '?' + $rootScope.callback;
 
-    DataLoader.get( siteApi ).success(function(data, status, headers, config) {
+    DataLoader.get( siteApi ).then(function(response) {
 
         var siteID = $rootScope.increment();
-        var site = { id: siteID, title: data.name, description: data.description, url: siteURL, username: u.username, password: u.password };
+        var site = { id: siteID, title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
         $scope.sites.push( site );
         // Create sites object for sites.html list page
         $localstorage.setObject( 'sites', $scope.sites );
         // Store site[id] object for later use
         $localstorage.setObject('site' + siteID, site );
         $ionicLoading.hide();
-      })
-      .error(function(data, status, headers, config) {
+      }, function(response) {
         $ionicLoading.hide();
         alert('Please make sure the WP-API plugin is installed on your site.');
         console.log('Site Factory error');
@@ -130,12 +129,11 @@ angular.module('wpApp.controllers', [])
   var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
 
   // Example of adding a section
-  DataLoader.get( dataURL ).success(function(data, status, headers, config) {
-        console.log( data );
-        $scope.sitesections.push({ 'title': { 'rendered': data.title.rendered }, 'icon': data.icon, 'route': data.route });
+  DataLoader.get( dataURL ).then(function(response) {
+        console.log( response.data );
+        $scope.sitesections.push({ 'title': { 'rendered': response.data.title.rendered }, 'icon': response.data.icon, 'route': response.data.route });
         $ionicLoading.hide();
-      })
-      .error(function(data, status, headers, config) {
+      }, function(response) {
         $ionicLoading.hide();
         console.log('Error');
     });
@@ -182,13 +180,12 @@ angular.module('wpApp.controllers', [])
 
     console.log('Fetching new data from API...');
 
-    DataLoader.get( dataURL + '?' + $rootScope.callback ).success(function(data, status, headers, config) {
-        $scope.data = data;
-        $localstorage.setObject('site' + $scope.id + $scope.slug, data );
+    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+        $scope.data = response.data;
+        $localstorage.setObject('site' + $scope.id + $scope.slug, response.data );
         $ionicLoading.hide();
-        console.dir(data);
-      }).
-      error(function(data, status, headers, config) {
+        console.dir(response.data);
+      }, function(response) {
         console.log('Error');
         $ionicLoading.hide();
     });
@@ -215,19 +212,18 @@ angular.module('wpApp.controllers', [])
 
     $timeout(function() {
 
-      DataLoader.get( dataURL + '?page=' + pg + '&' + $rootScope.callback ).success(function(data, status, headers, config) {
+      DataLoader.get( dataURL + '?page=' + pg + '&' + $rootScope.callback ).then(function(response) {
 
-        angular.forEach( data, function( value, key ) {
+        angular.forEach( response.data, function( value, key ) {
           $scope.data.push(value);
         });
 
         $localstorage.setObject('site' + $scope.id + $scope.title, $scope.data );
 
-        if( data.length <= 0 ) {
+        if( response.data.length <= 0 ) {
           $scope.moreItems = false;
         }
-      }).
-      error(function(data, status, headers, config) {
+      }, function(response) {
         $scope.moreItems = false;
         console.log('error');
       });
@@ -281,11 +277,10 @@ angular.module('wpApp.controllers', [])
 
     console.log(itemURL);
 
-    DataLoader.delete( $scope.site.username, $scope.site.password, itemURL ).success(function(data, status, headers, config) {
-      console.dir(data);
-    }).
-    error(function(data, status, headers, config) {
-      console.log('Error: ' + data );
+    DataLoader.delete( $scope.site.username, $scope.site.password, itemURL ).then(function(response) {
+      console.dir(response.data);
+    }, function(response) {
+      console.log('Error: ' + response.data );
   });
   }
 
