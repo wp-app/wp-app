@@ -20,16 +20,24 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading ) {
+.controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading, CacheFactory ) {
 
   // Sites view: templates/sites.html
 
-  // console.log( $localstorage.getObject( 'sites' ).length );
+  $scope.sites = [];
 
-  if( $localstorage.getObject( 'sites' ).length >= 1 ) {
-    $scope.sites = $localstorage.getObject( 'sites' );
-  } else {
-    $scope.sites = [];
+  // Create a cache for our site information
+  if (!CacheFactory.get('siteCache')) {
+    CacheFactory.createCache('siteCache');
+  }
+
+  $rootScope.siteCache = CacheFactory.get('siteCache');
+
+  if( $rootScope.siteCache ) {
+    // Loop through storage and add to our sites
+    angular.forEach( $rootScope.siteCache.keys(), function( value, key ) {
+      $scope.sites.push( $rootScope.siteCache.get(value) );
+    });
   }
 
   // Add a site modal
@@ -68,10 +76,10 @@ angular.module('wpApp.controllers', [])
         var siteID = $rootScope.increment();
         var site = { id: siteID, title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
         $scope.sites.push( site );
-        // Create sites object for sites.html list page
-        $localstorage.setObject( 'sites', $scope.sites );
-        // Store site[id] object for later use
-        $localstorage.setObject('site' + siteID, site );
+
+        // Add site to cache
+        $rootScope.siteCache.put( siteID, site );
+
         $ionicLoading.hide();
       }, function(response) {
         $ionicLoading.hide();
@@ -86,7 +94,7 @@ angular.module('wpApp.controllers', [])
   };
 
 
-  if( $scope.sites.length >= 1 ) {
+  if( $rootScope.siteCache.keys().length >= 1 ) {
     $scope.message = '';
   } else {
     $scope.message = 'Click + to add a site.';
@@ -94,16 +102,20 @@ angular.module('wpApp.controllers', [])
 
   $scope.onItemDelete = function(item) {
 
+    // console.log('Deleting site: ' + item.id);
+
     $scope.sites.splice($scope.sites.indexOf(item), 1);
-    console.log( item.id );
-    $localstorage.setObject( 'sites', $scope.sites );
+
+    $rootScope.siteCache.remove(item.id);
 
     angular.forEach( window.localStorage, function( value, key ) {
-      var sub = key.substring(0, 5);
-      console.log(sub);
-      if( sub == 'site' + item.id ) {
-        window.localStorage.removeItem(key);
-      }
+
+      // find and delete all site[id] caches (pages,posts,comments,etc)
+     var sub = key.substring(20, 25);
+     
+     if( sub == 'site' + item.id ) {
+       window.localStorage.removeItem(key);
+     }
     });
   }
 
@@ -116,7 +128,7 @@ angular.module('wpApp.controllers', [])
   // Site ID
   $scope.id = $stateParams.siteId;
 
-  var site = $localstorage.getObject('site' + $scope.id );
+  var site = $rootScope.siteCache.get($scope.id);
 
   // Example data
   $scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">' + site.title + '</h2>';
@@ -156,7 +168,7 @@ angular.module('wpApp.controllers', [])
 
   $scope.id = $stateParams.siteId;
 
-  var dataURL = $localstorage.getObject('site' + $scope.id ).url + '/wp-json' + $rootScope.route;
+  var dataURL = $rootScope.siteCache.get($scope.id).url + '/wp-json' + $rootScope.route;
 
   // Gets API data
   $scope.loadData = function() {
@@ -243,29 +255,45 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage ) {
+.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory ) {
 
   // Item detail view (single post, comment, etc.) templates/site-section-details.html
+
+  $rootScope.siteCache = CacheFactory.get('siteCache');
 
   $scope.siteID = $stateParams.siteId;
   $scope.slug = $stateParams.slug;
   $scope.itemID = $stateParams.itemId;
-  $scope.site = $localstorage.getObject('site' + $scope.siteID );
+  $scope.site = $rootScope.siteCache.get($scope.siteID);
   var url = $scope.site.url;
 
+  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
+    // Create cache
+    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
+  }
+
+  // Our data cache, i.e. site1postscache
+  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
+
+  //console.log(dataCache);
+
+  // API url to fetch data
   var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
 
   // Get data from locally stored object.
-  var itemExists = $localstorage.getObject('site' + $scope.siteID + $scope.slug + $scope.itemID );
+  // var itemExists = $localstorage.getObject('site' + $scope.siteID + $scope.slug + $scope.itemID );
 
-  if( JSON.stringify( itemExists ) === '{}' ) {
+  if( !dataCache.get($scope.itemID) ) {
 
     // Item doesn't exists, so go get it
     DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
         $scope.siteData = response.data;
-        $localstorage.setObject('site' + $scope.siteID + $scope.slug + $scope.itemID, response.data );
+
+
+        // Seems to be creating a new cache instead of pushing to current one
+        dataCache.put( response.data.id, response.data );
         $ionicLoading.hide();
-        console.dir(response.data);
+        // console.dir(response.data);
       }, function(response) {
         console.log('Error');
         $ionicLoading.hide();
@@ -273,7 +301,7 @@ angular.module('wpApp.controllers', [])
 
   } else {
     // Item exists, use localStorage
-    $scope.siteData = itemExists;
+    $scope.siteData = dataCache.get( $scope.itemID );
   }
 
   // Not working yet
