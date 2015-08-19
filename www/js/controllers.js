@@ -136,7 +136,7 @@ angular.module('wpApp.controllers', [])
   var url = site.url;
 
   // Default sections, can be passed in from somewhere else
-  $scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'},{'title': { 'rendered': 'Media' }, 'route':'/wp/v2/media/', 'icon':'ion-ios-cloud-outline'},{'title': { 'rendered': 'Settings' }, 'icon':'ion-ios-gear-outline'}];
+  $scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'},{'title': { 'rendered': 'Media' }, 'route':'/wp/v2/media/', 'icon':'ion-ios-cloud-outline'}];
 
   var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
 
@@ -162,9 +162,11 @@ angular.module('wpApp.controllers', [])
   // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
   // Get slug such as 'comments' from our route, to use to fetch data
-  var slug = $rootScope.route.split('/');
-  var slugindex = $rootScope.route.split('/').length - 2;
-  $scope.slug = slug[slugindex];
+  if($rootScope.route) {
+    var slug = $rootScope.route.split('/');
+    var slugindex = $rootScope.route.split('/').length - 2;
+    $scope.slug = slug[slugindex];
+  }
 
   $scope.id = $stateParams.siteId;
 
@@ -173,9 +175,9 @@ angular.module('wpApp.controllers', [])
   // Gets API data
   $scope.loadData = function() {
 
-    $ionicLoading.show({
-      noBackdrop: true
-    });
+    // $ionicLoading.show({
+    //   noBackdrop: true
+    // });
 
     console.log('Fetching new data from API...');
 
@@ -255,6 +257,32 @@ angular.module('wpApp.controllers', [])
 
 })
 
+.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope ) {
+
+  // Individual site settings, settings.html
+  $scope.settings = {};
+  $scope.site = $rootScope.siteCache.get($stateParams.siteId);
+  console.log($scope.site);
+  $scope.siteTitle = $scope.site.title;
+  $scope.settings.url = $scope.site.url;
+  $scope.settings.username = $scope.site.username;
+  $scope.settings.password = $scope.site.password;
+
+  //$scope.$on( '$ionicView.leave', $scope.saveSettings );
+
+  $scope.saveSettings = function() {
+    //console.log($scope.settings);
+    $scope.site.url = $scope.settings.url;
+    $scope.site.username = $scope.settings.username;
+    $scope.site.password = $scope.settings.password;
+    // $scope.site.push( url );
+    //console.log($scope.site);
+    $rootScope.siteCache.put( $stateParams.siteId, $scope.site );
+    alert('Saved!');
+  }
+
+})
+
 .controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory ) {
 
   // Item detail view (single post, comment, etc.) templates/site-section-details.html
@@ -285,12 +313,14 @@ angular.module('wpApp.controllers', [])
 
   if( !dataCache.get($scope.itemID) ) {
 
+    $ionicLoading.show({
+      noBackdrop: true
+    });
+
     // Item doesn't exists, so go get it
     DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+
         $scope.siteData = response.data;
-
-
-        // Seems to be creating a new cache instead of pushing to current one
         dataCache.put( response.data.id, response.data );
         $ionicLoading.hide();
         // console.dir(response.data);

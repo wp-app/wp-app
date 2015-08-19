@@ -79,6 +79,16 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
     }
   })
 
+  .state('app.sitesettings', {
+    url: "/settings/:siteId",
+    views: {
+      'sites-view': {
+        templateUrl: "templates/settings.html",
+        controller: 'SiteSettingsCtrl'
+      }
+    }
+  })
+
   .state('app.sectiondetail', {
     url: "/sites/:siteId/:slug/:itemId",
     views: {

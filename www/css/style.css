@@ -63,3 +63,7 @@
 	max-width: 100%;
 	height: auto;
 }
+
+.settings input {
+	width: 100%;
+}

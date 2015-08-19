@@ -1,0 +1,30 @@
+<ion-view view-title="Settings">
+	<ion-content>
+
+	<h4 class="padding">{{siteTitle}} Settings</h4>
+
+	<ul class="list settings">
+
+		<li class="item">
+			<label for="url">Site URL</label>
+			<input type="url" id="url" name="url" ng-model="settings.url"  />
+		</li>
+
+		<li class="item">
+			<label for="user">Username</label>
+			<input type="text" id="user" name="user" ng-model="settings.username" />
+		</li>
+
+		<li class="item">
+			<label for="pass">Password</label>
+			<input type="password" id="pass" name="pass" ng-model="settings.password" />
+		</li>
+
+	</ul>
+
+	<div class="padding">
+		<button class="button button-calm" ng-click="saveSettings('{{settings}}')">Save</button>
+	</div>
+    
+  </ion-content>
+</ion-view>
