@@ -142,7 +142,7 @@ angular.module('wpApp.controllers', [])
 
   // Example of adding a section
   DataLoader.get( dataURL ).then(function(response) {
-        console.log( response.data );
+        // console.log( response.data );
         $scope.sitesections.push({ 'title': { 'rendered': response.data.title.rendered }, 'icon': response.data.icon, 'route': response.data.route });
         $ionicLoading.hide();
       }, function(response) {
@@ -179,8 +179,6 @@ angular.module('wpApp.controllers', [])
     //   noBackdrop: true
     // });
 
-    console.log('Fetching new data from API...');
-
     DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
 
         $scope.data = response.data;
@@ -216,13 +214,16 @@ angular.module('wpApp.controllers', [])
 
       DataLoader.get( dataURL + '?page=' + pg + '&' + $rootScope.callback ).then(function(response) {
 
+        // Prevent load more bug
+        if( response.data.length <= 0 || response.data[0].id === $scope.data[0].id || response.data[0].content === $scope.data[0].content ) {
+          $scope.moreItems = false;
+          return;
+        }
+
         angular.forEach( response.data, function( value, key ) {
           $scope.data.push(value);
         });
 
-        if( response.data.length <= 0 ) {
-          $scope.moreItems = false;
-        }
       }, function(response) {
         $scope.moreItems = false;
         console.log('Load more error');
