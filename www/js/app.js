@@ -4,7 +4,7 @@
 // 'wpApp' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'wpApp.controllers' is found in controllers.js, wpIoinc.services is in services.js
-angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpApp.services', 'ngCordova', 'angular-cache'])
+angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpApp.services', 'ngCordova', 'angular-cache', 'chart.js'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -95,6 +95,16 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
       'sites-view': {
         templateUrl: "templates/site-section-details.html",
         controller: 'SiteSectionDetailCtrl'
+      }
+    }
+  })
+
+  .state('app.stats', {
+    url: "/stats",
+    views: {
+      'stats-view': {
+        templateUrl: "templates/stats.html",
+        controller: 'StatsCtrl'
       }
     }
   })
