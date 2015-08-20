@@ -139,9 +139,8 @@ The first step is just to make some plans, then write them out and assign them.
 
 ### Setup this project locally
 
-1. Install Ionic CLI tools
-2. Create your Ionic project: $ ionic start wp-app
+1. [Install Ionic CLI tools](http://ionicframework.com/docs/cli/install.html): `npm install -g ionic`
+2. Create your Ionic project: `ionic start wp-app`
 3. Replace your www folder with the www folder in this repo
-
-- Build your app $ ionic build ios
-- Test in browser $ ionic serve --lab
+4. Build your app: `ionic build ios`
+5. Test in browser: `ionic serve --lab`
