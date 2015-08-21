@@ -340,18 +340,56 @@ angular.module('wpApp.controllers', [])
 	  
 	  var url = $scope.site.url;
 
-  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
-    // Create cache
-    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
-  }
+	  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
+	    // Create cache
+	    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
+	  }
 
-  // Our data cache, i.e. site1postscache
-  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
+	  // Our data cache, i.e. site1postscache
+	  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
 
-  // API url to fetch data
-  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
+	  // API url to fetch data
+	  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
 
-  // Handle charts
+
+
+	  if( !dataCache.get($scope.itemID) ) {
+	
+	    $ionicLoading.show({
+	      noBackdrop: true
+	    });
+	
+	    // Item doesn't exists, so go get it
+	    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+	        console.log(response.data);
+	        $scope.siteData = response.data;
+	        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
+	        dataCache.put( response.data.id, response.data );
+	
+	        if(response.data.chart) {
+	          $scope.loadChart(response.data.chart);
+	        }
+	
+	        $ionicLoading.hide();
+	        // console.dir(response.data);
+	      }, function(response) {
+	        console.log('Error');
+	        $ionicLoading.hide();
+	    });
+	
+	  } else {
+	    // Item exists, use localStorage
+	    $scope.siteData = dataCache.get( $scope.itemID );
+	    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
+	    
+	    if($scope.siteData.chart) {
+	      $scope.loadChart( $scope.siteData.chart );
+	    }
+	  }
+	
+  });
+  
+    // Handle charts
   $scope.loadChart = function(data) {
 
     if(!data)
@@ -364,40 +402,6 @@ angular.module('wpApp.controllers', [])
     
     }, 1000);
 
-  }
-
-  if( !dataCache.get($scope.itemID) ) {
-
-    $ionicLoading.show({
-      noBackdrop: true
-    });
-
-    // Item doesn't exists, so go get it
-    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
-        console.log(response.data);
-        $scope.siteData = response.data;
-        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
-        dataCache.put( response.data.id, response.data );
-
-        if(response.data.chart) {
-          $scope.loadChart(response.data.chart);
-        }
-
-        $ionicLoading.hide();
-        // console.dir(response.data);
-      }, function(response) {
-        console.log('Error');
-        $ionicLoading.hide();
-    });
-
-  } else {
-    // Item exists, use localStorage
-    $scope.siteData = dataCache.get( $scope.itemID );
-    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
-    
-    if($scope.siteData.chart) {
-      $scope.loadChart( $scope.siteData.chart );
-    }
   }
 
   // Not working yet
