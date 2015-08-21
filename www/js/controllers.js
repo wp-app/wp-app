@@ -255,7 +255,7 @@ angular.module('wpApp.controllers', [])
       $scope.$broadcast('scroll.infiniteScrollComplete');
       $scope.$broadcast('scroll.resize');
 
-    }, 1000);
+    }, 2000);
 
   }
 
