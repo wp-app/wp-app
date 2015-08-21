@@ -26,7 +26,7 @@ angular.module('wpApp.controllers', [])
 
   
   $scope.loadSites = function() {
-	  console.log('Loading sites...');
+	  
 	  $scope.sites = [];
 	  
 	  localSites.allDocs({ include_docs: true }).then( function ( results ) {
@@ -48,7 +48,7 @@ angular.module('wpApp.controllers', [])
 		 }
 		 
 	  });
-	  console.log('Sites loaded!');
+	  
   };
   
   $scope.loadSites();
@@ -113,7 +113,16 @@ angular.module('wpApp.controllers', [])
     // console.log('Deleting site: ' + item.id);
 
     localSites.get( item._id ).then( function( doc ) {
+	    
+	    angular.forEach( window.localStorage, function( value, key ) {
+		    // find and delete all site[id] caches (pages,posts,comments,etc)
+		    if ( key.indexOf( 'site' + item._id ) >= 0 ) {
+			    window.localStorage.removeItem( key );
+		    }
+	    })
+	    
 	    return localSites.remove( doc );
+	    
     }).then( function( result ) {
 	    $scope.loadSites();
     }).catch( function( err ) {
