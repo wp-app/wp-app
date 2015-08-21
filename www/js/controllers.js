@@ -235,7 +235,7 @@ angular.module('wpApp.controllers', [])
 
     $timeout(function() {
 
-      DataLoader.get( $scope.dataURL + '?page=' + pg + '&' + $rootScope.callback ).then(function(response) {
+      DataLoader.get( dataURL + '?page=' + pg + '&' + $rootScope.callback ).then(function(response) {
 
         // Prevent load more bug
         if( response.data.length <= 0 || response.data[0].id === $scope.data[0].id || response.data[0].content === $scope.data[0].content ) {
