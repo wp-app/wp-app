@@ -23,9 +23,12 @@ angular.module('wpApp.controllers', [])
 .controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading, CacheFactory ) {
 
   // Sites view: templates/sites.html
-
   
-  $scope.loadSites = function() {
+  if ( ! CacheFactory.get('siteCache') ) {
+	  CacheFactory.createCache('siteCache');
+  }
+  
+  function loadSites() {
 	  
 	  $scope.sites = [];
 	  
@@ -51,7 +54,7 @@ angular.module('wpApp.controllers', [])
 	  
   };
   
-  $scope.loadSites();
+  loadSites();
   
   // Add a site modal
   $ionicModal.fromTemplateUrl('templates/add-site-modal.html', {
@@ -90,7 +93,7 @@ angular.module('wpApp.controllers', [])
 
         // Add site to cache
         localSites.put( site ).then( function ( response ) {
-	    	$scope.loadSites();
+	    	loadSites();
         }).catch( function( err ) {
 	    	console.log( err ); 
         });
@@ -124,7 +127,7 @@ angular.module('wpApp.controllers', [])
 	    return localSites.remove( doc );
 	    
     }).then( function( result ) {
-	    $scope.loadSites();
+	    loadSites();
     }).catch( function( err ) {
 	   console.log( err ); 
     });
@@ -178,6 +181,8 @@ angular.module('wpApp.controllers', [])
 
   // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
+  var dataURL = '';
+
   // Get slug such as 'comments' from our route, to use to fetch data
   if($rootScope.route) {
     var slug = $rootScope.route.split('/');
@@ -192,7 +197,7 @@ angular.module('wpApp.controllers', [])
     //   noBackdrop: true
     // });
 
-    DataLoader.get( $scope.dataURL + '?' + $rootScope.callback ).then(function(response) {
+    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
 
         $scope.data = response.data;
         $ionicLoading.hide();
@@ -207,16 +212,12 @@ angular.module('wpApp.controllers', [])
   }
 
   $scope.id = $stateParams.siteId;
-  $scope.dataURL = '';
 
   localSites.get( $scope.id ).then( function( doc ) {
-	  $scope.dataURL = doc.url + '/wp-json' + $rootScope.route;
+	  dataURL = doc.url + '/wp-json' + $rootScope.route;
 	  // Load posts on page load
 	  $scope.loadData();
   });
-  
-  //var dataURL = $rootScope.siteCache.get($scope.id).url + '/wp-json' + $rootScope.route;
-
 
   paged = 2;
   $scope.moreItems = true;
@@ -286,7 +287,6 @@ angular.module('wpApp.controllers', [])
   $scope.settings = {};
   //$scope.site = $rootScope.siteCache.get($stateParams.siteId);
   localSites.get( $stateParams.siteId ).then( function( doc ) {
-	  console.log(doc);
 	  $scope.$apply( function () {
 		  $scope.site = doc;
 		  $scope.siteTitle = $scope.site.title;
@@ -310,13 +310,10 @@ angular.module('wpApp.controllers', [])
     //console.log($scope.site);
     
     localSites.get( $stateParams.siteId ).then( function( doc ) {
-	    return localSites.put({
-		    _id: doc._id,
-		    _rev: doc._rev,
-		    url: $scope.site.url,
-		    username: $scope.site.username,
-		    password: $scope.site.password
-	    });
+	    doc.url = $scope.site.url;
+	    doc.username = $scope.site.username;
+	    doc.password = $scope.site.password;
+	    return localSites.put( doc );
     }).then( function( response ) {
 	    alert('Saved!');
     }).catch( function( err ) {
