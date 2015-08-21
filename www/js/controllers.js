@@ -86,8 +86,7 @@ angular.module('wpApp.controllers', [])
 
     DataLoader.get( siteApi ).then(function(response) {
 
-        var siteID = $rootScope.increment();
-        var site = { _id: siteID.toString(), title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
+        var site = { _id: new Date().toISOString(), title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
 
         // Add site to cache
         localSites.put( site ).then( function ( response ) {
