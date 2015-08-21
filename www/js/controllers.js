@@ -284,7 +284,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory ) {
+.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout ) {
 
   // Item detail view (single post, comment, etc.) templates/site-section-details.html
 
@@ -304,13 +304,23 @@ angular.module('wpApp.controllers', [])
   // Our data cache, i.e. site1postscache
   var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
 
-  //console.log(dataCache);
-
   // API url to fetch data
   var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
 
-  // Get data from locally stored object.
-  // var itemExists = $localstorage.getObject('site' + $scope.siteID + $scope.slug + $scope.itemID );
+  // Handle charts
+  $scope.loadChart = function(data) {
+
+    if(!data)
+      return;
+
+    $timeout( function() {
+
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var myNewChart = new Chart(ctx).Line( data );
+    
+    }, 1000);
+
+  }
 
   if( !dataCache.get($scope.itemID) ) {
 
@@ -320,9 +330,15 @@ angular.module('wpApp.controllers', [])
 
     // Item doesn't exists, so go get it
     DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
-
+        console.log(response.data);
         $scope.siteData = response.data;
+        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
         dataCache.put( response.data.id, response.data );
+
+        if(response.data.chart) {
+          $scope.loadChart(response.data.chart);
+        }
+
         $ionicLoading.hide();
         // console.dir(response.data);
       }, function(response) {
@@ -333,6 +349,11 @@ angular.module('wpApp.controllers', [])
   } else {
     // Item exists, use localStorage
     $scope.siteData = dataCache.get( $scope.itemID );
+    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
+    
+    if($scope.siteData.chart) {
+      $scope.loadChart( $scope.siteData.chart );
+    }
   }
 
   // Not working yet
@@ -352,6 +373,9 @@ angular.module('wpApp.controllers', [])
 })
 
 .controller('StatsCtrl', function($scope ) {
+
+  // var ctx = document.getElementById("line").getContext("2d");
+  // var myNewChart = new Chart(ctx).Line(data, options);
 
   // This is our data for stats.html
 

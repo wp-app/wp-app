@@ -6,7 +6,7 @@
 	<div class="card">
 		<div class="item item-body">
 			<h2 ng-bind-html="siteData.title.rendered"></h2>
-			<p ng-if="siteData.content.rendered" ng-bind-html="siteData.content.rendered"></p>
+			<p ng-if="content" ng-bind-html="content"></p>
 			<p ng-if="siteData.author_name" ng-bind-html="siteData.author_name"></p>
 			<img ng-if="siteData.media_details" src="{{siteData.media_details.sizes.medium.source_url}}" />
 		</div>
