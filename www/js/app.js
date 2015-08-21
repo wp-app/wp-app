@@ -120,3 +120,5 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/sites');
 });
+
+var localSites = new PouchDB('sites');
