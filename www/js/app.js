@@ -27,7 +27,10 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
     'capacity': 100
   })
 
-  //$ionicConfigProvider.scrolling.jsScrolling(false);
+  // Native scrolling
+  if( ionic.Platform.isAndroid() ) {
+    $ionicConfigProvider.scrolling.jsScrolling(false);
+  }
 
   $stateProvider
 
