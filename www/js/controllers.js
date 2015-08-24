@@ -20,41 +20,31 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading, CacheFactory ) {
+.controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading, CacheFactory, $ionicPlatform, SitesDB ) {
 
   // Sites view: templates/sites.html
+  
+  // Initialize the database
+  $ionicPlatform.ready( function() {
+	 SitesDB.initDB(); 
+	 
+	 // Get all the sites from the database.
+	 SitesDB.getAllSites().then( function( sites ) {
+		 $scope.sites = sites;
+	 });
+	 
+	 SitesDB.count().then( function( count ) {
+		if ( count > 0 ) {
+			$scope.message = '';
+		} else {
+			$scope.message = "Click + to add a site.";
+		}
+	 });
+  });
   
   if ( ! CacheFactory.get('siteCache') ) {
 	  CacheFactory.createCache('siteCache');
   }
-  
-  function loadSites() {
-	  
-	  $scope.sites = [];
-	  
-	  localSites.allDocs({ include_docs: true }).then( function ( results ) {
-		  
-		  $scope.$apply( function() {
-			  angular.forEach( results.rows, function( result ) {
-				 $scope.sites.push( result.doc ); 
-			  });
-		  });
-
-	  });
-	  
-	  localSites.info().then( function ( info ) {
-		 
-		 if ( info.doc_count > 0 ) {
-			 $scope.message = '';
-		 } else {
-			 $scope.message = "Click + to add a site.";
-		 }
-		 
-	  });
-	  
-  };
-  
-  loadSites();
   
   // Add a site modal
   $ionicModal.fromTemplateUrl('templates/add-site-modal.html', {
@@ -89,14 +79,10 @@ angular.module('wpApp.controllers', [])
 
     DataLoader.get( siteApi ).then(function(response) {
 
-        var site = { _id: new Date().toISOString(), title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
+        var site = { title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
 
         // Add site to cache
-        localSites.put( site ).then( function ( response ) {
-	    	loadSites();
-        }).catch( function( err ) {
-	    	console.log( err ); 
-        });
+        SitesDB.addSite( site );
 
         $ionicLoading.hide();
       }, function(response) {
@@ -114,60 +100,53 @@ angular.module('wpApp.controllers', [])
   $scope.onItemDelete = function(item) {
 
     // console.log('Deleting site: ' + item.id);
-
-    localSites.get( item._id ).then( function( doc ) {
 	    
-	    angular.forEach( window.localStorage, function( value, key ) {
-		    // find and delete all site[id] caches (pages,posts,comments,etc)
-		    if ( key.indexOf( 'site' + item._id ) >= 0 ) {
-			    window.localStorage.removeItem( key );
-		    }
-	    })
-	    
-	    return localSites.remove( doc );
-	    
-    }).then( function( result ) {
-	    loadSites();
-    }).catch( function( err ) {
-	   console.log( err ); 
-    });
+    angular.forEach( window.localStorage, function( value, key ) {
+	    // find and delete all site[id] caches (pages,posts,comments,etc)
+	    if ( key.indexOf( 'site' + item._id ) >= 0 ) {
+		    window.localStorage.removeItem( key );
+	    }
+    })
+    
+    SitesDB.deleteSite( item );
 
   }
 
 })
 
-.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader, $state ) {
+.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader, $state, $ionicPlatform, SitesDB ) {
 
   // Controller for single site detail page. templates/site.html
 
   // Site ID
   $scope.id = $stateParams.siteId;
+  
+  // Initialize the database.
+  $ionicPlatform.ready( function() {
+	 SitesDB.initDB();
+	 
+	 SitesDB.getSite( $scope.id ).then( function( site ) {
+		// Example data
+		$scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">' + site.title + '</h2>';
+		
+		var url = site.url;
+		
+		// Default sections, can be passed in from somewhere else
+		$scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'},{'title': { 'rendered': 'Media' }, 'route':'/wp/v2/media/', 'icon':'ion-ios-cloud-outline'}];
+		
+		var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
+		
+		// Example of adding a section
+		DataLoader.get( dataURL ).then(function(response) {
+		    // console.log( response.data );
+		    $scope.sitesections.push({ 'title': { 'rendered': response.data.title.rendered }, 'icon': response.data.icon, 'route': response.data.route });
+		    $ionicLoading.hide();
+		  }, function(response) {
+		    $ionicLoading.hide();
+		    console.log('No custom site sections to get.');
+		});
 
-  localSites.get( $scope.id ).then( function( doc ) {
-	  var site = doc;
-	  
-	  // Example data
-	  $scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">' + site.title + '</h2>';
-	
-	  var url = site.url;
-	
-	  // Default sections, can be passed in from somewhere else
-	  $scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'},{'title': { 'rendered': 'Media' }, 'route':'/wp/v2/media/', 'icon':'ion-ios-cloud-outline'}];
-	
-	  var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
-	
-	  // Example of adding a section
-	  DataLoader.get( dataURL ).then(function(response) {
-	        // console.log( response.data );
-	        $scope.sitesections.push({ 'title': { 'rendered': response.data.title.rendered }, 'icon': response.data.icon, 'route': response.data.route });
-	        $ionicLoading.hide();
-	      }, function(response) {
-	        $ionicLoading.hide();
-	        console.log('No custom site sections to get.');
-	    });
-
-  }).catch( function ( err ) {
-	  console.log( err );
+	 });
   });
 
   // Gets the API route from the link in site.html, which we use in SiteSectionCtrl
@@ -177,7 +156,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout ) {
+.controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout, $ionicPlatform, SitesDB ) {
 
   // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
@@ -213,12 +192,17 @@ angular.module('wpApp.controllers', [])
 
   $scope.id = $stateParams.siteId;
 
-  localSites.get( $scope.id ).then( function( doc ) {
-	  dataURL = doc.url + '/wp-json' + $rootScope.route;
-	  // Load posts on page load
-	  $scope.loadData();
+  // Initialize the database.
+  $ionicPlatform.ready( function() {
+	 SitesDB.initDB();
+	 
+	 SitesDB.getSite( $scope.id ).then( function( site ) {
+		 dataURL = site.url + '/wp-json' + $rootScope.route;
+		  // Load posts on page load
+		  $scope.loadData();
+	 });
   });
-
+  
   paged = 2;
   $scope.moreItems = true;
 
@@ -281,20 +265,24 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope ) {
+.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $ionicPlatform, SitesDB ) {
 
   // Individual site settings, settings.html
   $scope.settings = {};
   //$scope.site = $rootScope.siteCache.get($stateParams.siteId);
-  localSites.get( $stateParams.siteId ).then( function( doc ) {
-	  $scope.$apply( function () {
-		  $scope.site = doc;
-		  $scope.siteTitle = $scope.site.title;
-		  $scope.settings.url = $scope.site.url;
-		  $scope.settings.username = $scope.site.username;
-		  $scope.settings.password = $scope.site.password;
-	  });
-  })
+  
+  // Initialize the database.
+  $ionicPlatform.ready( function() {
+	 SitesDB.initDB();
+	 
+	 SitesDB.getSite( $stateParams.siteId ).then( function( site ) {
+		 $scope.site = site;
+		 $scope.siteTitle = $scope.site.title;
+		 $scope.settings.url = $scope.site.url;
+		 $scope.settings.username = $scope.site.username;
+		 $scope.settings.password = $scope.site.password;
+	 });
+  });
   
   
   
@@ -306,25 +294,17 @@ angular.module('wpApp.controllers', [])
     $scope.site.url = $scope.settings.url;
     $scope.site.username = $scope.settings.username;
     $scope.site.password = $scope.settings.password;
-    // $scope.site.push( url );
     //console.log($scope.site);
     
-    localSites.get( $stateParams.siteId ).then( function( doc ) {
-	    doc.url = $scope.site.url;
-	    doc.username = $scope.site.username;
-	    doc.password = $scope.site.password;
-	    return localSites.put( doc );
-    }).then( function( response ) {
+    SitesDB.updateSite( $scope.site ).then( function() {
 	    alert('Saved!');
-    }).catch( function( err ) {
-	   console.log( err ); 
-    });
+	});
     
   }
 
 })
 
-.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout ) {
+.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout, $ionicPlatform, SitesDB ) {
 
   // Item detail view (single post, comment, etc.) templates/site-section-details.html
 
@@ -335,59 +315,118 @@ angular.module('wpApp.controllers', [])
   $scope.itemID = $stateParams.itemId;
   //$scope.site = $rootScope.siteCache.get($scope.siteID);
   
-  localSites.get( $scope.siteID ).then( function( doc ) {
-	  $scope.site = doc;
+  // Initialize the database.
+  $ionicPlatform.ready( function() {
+	  SitesDB.initDB();
 	  
-	  var url = $scope.site.url;
-
-	  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
-	    // Create cache
-	    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
-	  }
-
-	  // Our data cache, i.e. site1postscache
-	  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
-
-	  // API url to fetch data
-	  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
-
-
-
-	  if( !dataCache.get($scope.itemID) ) {
+	  SitesDB.getSite( $scope.siteID ).then( function( site ) {
+		  $scope.site = site;
+		  
+		  var url = $scope.site.url;
+		  
+		  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
+		    // Create cache
+		    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
+		  }
 	
-	    $ionicLoading.show({
-	      noBackdrop: true
-	    });
+		  // Our data cache, i.e. site1postscache
+		  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
 	
-	    // Item doesn't exists, so go get it
-	    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
-	        console.log(response.data);
-	        $scope.siteData = response.data;
-	        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
-	        dataCache.put( response.data.id, response.data );
-	
-	        if(response.data.chart) {
-	          $scope.loadChart(response.data.chart);
-	        }
-	
-	        $ionicLoading.hide();
-	        // console.dir(response.data);
-	      }, function(response) {
-	        console.log('Error');
-	        $ionicLoading.hide();
-	    });
-	
-	  } else {
-	    // Item exists, use localStorage
-	    $scope.siteData = dataCache.get( $scope.itemID );
-	    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
-	    
-	    if($scope.siteData.chart) {
-	      $scope.loadChart( $scope.siteData.chart );
-	    }
-	  }
-	
+		  // API url to fetch data
+		  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
+
+		  if( !dataCache.get($scope.itemID) ) {
+		
+		    $ionicLoading.show({
+		      noBackdrop: true
+		    });
+		
+		    // Item doesn't exists, so go get it
+		    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+		        console.log(response.data);
+		        $scope.siteData = response.data;
+		        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
+		        dataCache.put( response.data.id, response.data );
+		
+		        if(response.data.chart) {
+		          $scope.loadChart(response.data.chart);
+		        }
+		
+		        $ionicLoading.hide();
+		        // console.dir(response.data);
+		      }, function(response) {
+		        console.log('Error');
+		        $ionicLoading.hide();
+		    });
+		
+		  } else {
+		    // Item exists, use localStorage
+		    $scope.siteData = dataCache.get( $scope.itemID );
+		    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
+		    
+		    if($scope.siteData.chart) {
+		      $scope.loadChart( $scope.siteData.chart );
+		    }
+		  }
+
+	  });
   });
+  
+  
+  
+//  localSites.get( $scope.siteID ).then( function( doc ) {
+//	  $scope.site = doc;
+//	  
+//	  var url = $scope.site.url;
+//
+//	  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
+//	    // Create cache
+//	    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
+//	  }
+//
+//	  // Our data cache, i.e. site1postscache
+//	  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
+//
+//	  // API url to fetch data
+//	  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
+//
+//
+//
+//	  if( !dataCache.get($scope.itemID) ) {
+//	
+//	    $ionicLoading.show({
+//	      noBackdrop: true
+//	    });
+//	
+//	    // Item doesn't exists, so go get it
+//	    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+//	        console.log(response.data);
+//	        $scope.siteData = response.data;
+//	        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
+//	        dataCache.put( response.data.id, response.data );
+//	
+//	        if(response.data.chart) {
+//	          $scope.loadChart(response.data.chart);
+//	        }
+//	
+//	        $ionicLoading.hide();
+//	        // console.dir(response.data);
+//	      }, function(response) {
+//	        console.log('Error');
+//	        $ionicLoading.hide();
+//	    });
+//	
+//	  } else {
+//	    // Item exists, use localStorage
+//	    $scope.siteData = dataCache.get( $scope.itemID );
+//	    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
+//	    
+//	    if($scope.siteData.chart) {
+//	      $scope.loadChart( $scope.siteData.chart );
+//	    }
+//	  }
+//	
+//  });
   
     // Handle charts
   $scope.loadChart = function(data) {
