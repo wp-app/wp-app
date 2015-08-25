@@ -7,7 +7,7 @@
 
 	<ion-content>
 	<ion-list>
-		<ion-item class="item-icon-right" ng-repeat="site in sites track by $index" href="#/app/sites/{{site.id}}">
+		<ion-item class="item-icon-right" ng-repeat="site in sites track by $index" href="#/app/sites/{{site._id}}">
 			<ion-option-button class="button-assertive" ng-click="onItemDelete(site)">
 			<i class="icon ion-minus-circled"></i>
           </ion-option-button>
