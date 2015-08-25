@@ -284,8 +284,6 @@ angular.module('wpApp.controllers', [])
 	 });
   });
   
-  
-  
 
   //$scope.$on( '$ionicView.leave', $scope.saveSettings );
 
@@ -304,7 +302,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout, $ionicPlatform, SitesDB ) {
+.controller('SiteSectionDetailCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout, $ionicPlatform, SitesDB, Base64 ) {
 
   // Item detail view (single post, comment, etc.) templates/site-section-details.html
 
@@ -372,63 +370,7 @@ angular.module('wpApp.controllers', [])
 	  });
   });
   
-  
-  
-//  localSites.get( $scope.siteID ).then( function( doc ) {
-//	  $scope.site = doc;
-//	  
-//	  var url = $scope.site.url;
-//
-//	  if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
-//	    // Create cache
-//	    CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
-//	  }
-//
-//	  // Our data cache, i.e. site1postscache
-//	  var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
-//
-//	  // API url to fetch data
-//	  var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
-//
-//
-//
-//	  if( !dataCache.get($scope.itemID) ) {
-//	
-//	    $ionicLoading.show({
-//	      noBackdrop: true
-//	    });
-//	
-//	    // Item doesn't exists, so go get it
-//	    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
-//	        console.log(response.data);
-//	        $scope.siteData = response.data;
-//	        $scope.content = $sce.trustAsHtml(response.data.content.rendered);
-//	        dataCache.put( response.data.id, response.data );
-//	
-//	        if(response.data.chart) {
-//	          $scope.loadChart(response.data.chart);
-//	        }
-//	
-//	        $ionicLoading.hide();
-//	        // console.dir(response.data);
-//	      }, function(response) {
-//	        console.log('Error');
-//	        $ionicLoading.hide();
-//	    });
-//	
-//	  } else {
-//	    // Item exists, use localStorage
-//	    $scope.siteData = dataCache.get( $scope.itemID );
-//	    $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
-//	    
-//	    if($scope.siteData.chart) {
-//	      $scope.loadChart( $scope.siteData.chart );
-//	    }
-//	  }
-//	
-//  });
-  
-    // Handle charts
+  // Handle charts
   $scope.loadChart = function(data) {
 
     if(!data)
@@ -443,14 +385,20 @@ angular.module('wpApp.controllers', [])
 
   }
 
-  // Not working yet
   $scope.deleteComment = function() {
-    // Not working, possible CORS error?
+
+    // TODO: delete from cache after item deleted
+
+    var user = $scope.site.username;
+    var pass = $scope.site.password;
+
+    var base64 = Base64.encode( user + ':' + pass );
+
     var itemURL = $scope.site.url + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
 
-    console.log(itemURL);
+    console.log(base64 + itemURL);
 
-    DataLoader.delete( $scope.site.username, $scope.site.password, itemURL ).then(function(response) {
+    DataLoader.delete( base64, itemURL ).then(function(response) {
       console.dir(response.data);
     }, function(response) {
       console.log('Error: ' + response.data );
@@ -463,12 +411,17 @@ angular.module('wpApp.controllers', [])
 
   // This is our data for stats.html
 
+  // Need this stuff if canvas element does not have attributes for data, options, etc.
+  // var ctx = document.getElementById("line").getContext("2d");
+  // var myNewChart = new Chart(ctx).Line(data, options);
+
   $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
   $scope.series = ['2014', '2015'];
   $scope.data = [
       [65, 59, 80, 81, 56, 55, 40],
       [28, 48, 40, 19, 86, 27, 90]
   ];
+
 })
 
 .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, $ionicViewService) {
