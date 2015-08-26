@@ -2,7 +2,7 @@
 
 An open source, customizable mobile app for WordPress management.
 
-![Preview Image](wp-app-mockup1.jpg)
+![Preview Image](https://cloud.githubusercontent.com/assets/516559/9420253/3f53a01c-4818-11e5-96a3-d3713c7df3f7.png)
 
 ## The Idea
 
