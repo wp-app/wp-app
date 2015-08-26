@@ -120,6 +120,18 @@ angular.module('wpApp.services', [])
 
       return $http( req );
     },
+    put: function(base64, url, options) {
+      
+      $http.defaults.headers.common['Authorization'] = 'Basic ' + base64;
+
+      var req = { 
+        method: 'PUT', 
+        url: url,
+        data: options 
+      }
+
+      return $http( req );
+    },
     delete: function(base64, url) {
 
       $http.defaults.headers.common['Authorization'] = 'Basic ' + base64;
