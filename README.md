@@ -24,7 +24,7 @@ This project is intended to be by the community, for the community.
 
 ## Try it out
 
-To see this project in action, download the wp-app/www folder, and open wp-app/www/index.html in Safari or Chrome. Click '+' to add a new site, the site must have the WP-API v2 installed and activated: [https://wordpress.org/plugins/rest-api/](https://wordpress.org/plugins/rest-api/)
+To see this project in action, download the wp-app folder, and open wp-app/index.html in Safari or Chrome. Click '+' to add a new site, the site must have the WP-API v2 installed and activated: [https://wordpress.org/plugins/rest-api/](https://wordpress.org/plugins/rest-api/)
 
 For now, just enter a site URL, no user/pass needed.
 
@@ -141,6 +141,8 @@ The first step is just to make some plans, then write them out and assign them.
 
 1. [Install Ionic CLI tools](http://ionicframework.com/docs/cli/install.html): `npm install -g ionic`
 2. Create your Ionic project: `ionic start wp-app`
-3. Replace your www folder with the www folder in this repo
+3. Change directory into the "wp-app" folder: `cd wp-app`
+3. Remove the "www" folder
+3. Clone this repo into a new "www" folder: `git clone http://github.com/wp-app/wp-app.git www`
 4. Build your app: `ionic build ios`
 5. Test in browser: `ionic serve --lab`
