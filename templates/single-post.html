@@ -8,7 +8,7 @@
 			<h2 ng-bind-html="siteData.title.rendered"></h2>
 			<p ng-if="content" ng-bind-html="content"></p>
 			<p ng-if="siteData.author_name" ng-bind-html="siteData.author_name"></p>
-			<img ng-if="siteData.media_details" src="{{siteData.media_details.sizes.medium.source_url}}" />
+			<img ng-if="siteData.media_details" ng-src="{{siteData.media_details.sizes.medium.source_url}}" />
 		</div>
 
 		<div class="item tabs tabs-secondary tabs-icon-left">
