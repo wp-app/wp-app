@@ -112,6 +112,16 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
     }
   })
 
+  .state('app.page', {
+    url: "/sites/:siteId/pages/:itemId",
+    views: {
+      'sites-view': {
+        templateUrl: "templates/single-post.html",
+        controller: 'PostCtrl'
+      }
+    }
+  })
+
   .state('app.apppages', {
     url: "/sites/:siteId/apppages/:itemId",
     views: {
@@ -121,17 +131,6 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
       }
     }
   })
-
-  // this should be default if using a custom slug through a plugin
-  // .state('app.sectiondetail', {
-  //   url: "/sites/:siteId/:slug/:itemId",
-  //   views: {
-  //     'sites-view': {
-  //       templateUrl: "templates/site-section-details.html",
-  //       controller: 'SiteSectionDetailCtrl'
-  //     }
-  //   }
-  // })
 
   .state('app.stats', {
     url: "/stats",
