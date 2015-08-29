@@ -322,8 +322,6 @@ angular.module('wpApp.controllers', [])
 
   $scope.deleteComment = function() {
 
-    // TODO: delete from cache after item deleted
-
     var itemURL = $rootScope.site.url + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
 
     DataLoader.delete( $rootScope.base64, itemURL ).then(function(response) {
@@ -362,14 +360,14 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('PostCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce ) {
+.controller('PostCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce, $ionicHistory ) {
 
   // Controller for posts and pages single-post.html
 
   console.log('PostCtrl');
 
   $scope.siteID = $stateParams.siteId;
-  $scope.slug = 'post';
+  $scope.slug = 'posts';
   $scope.itemID = $stateParams.itemId;
 
   if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
@@ -406,6 +404,25 @@ angular.module('wpApp.controllers', [])
     // Item exists, use localStorage
     $scope.siteData = dataCache.get( $scope.itemID );
     $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
+  }
+
+  $scope.deletePost = function() {
+
+    var itemURL = $rootScope.site.url + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
+
+    DataLoader.delete( $rootScope.base64, itemURL ).then(function(response) {
+
+        // Remove item from cache
+        dataCache.remove($scope.siteData.id);
+        alert('Item deleted');
+
+        // Go back to previous state. TODO: Deleted post still exists in old state, need to remove it
+        $ionicHistory.goBack();
+
+      }, function(response) {
+        // Getting an error even if it's successful
+        console.log(response.data );
+    });
   }
 
 })
