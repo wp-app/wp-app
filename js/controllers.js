@@ -64,7 +64,7 @@ angular.module('wpApp.controllers', [])
 
     // Called when "create site" button is pressed
 
-    if(!u) {
+    if(!u.username || !u.password || !u.url ) {
       alert('Please fill in all fields.');
       return;
     }
@@ -137,7 +137,7 @@ angular.module('wpApp.controllers', [])
 		var url = site.url;
 		
 		// Default sections, can be passed in from somewhere else
-		$scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'}];
+		$scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'}, {'title': { 'rendered': 'Users' }, 'icon':'ion-person', 'route':'/wp/v2/users/'}];
 		
 		var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
 		
@@ -161,11 +161,14 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout, $ionicPlatform, SitesDB ) {
+.controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout, $ionicPlatform, SitesDB, Base64, CacheFactory ) {
 
   // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
+  $rootScope.base64 = Base64.encode( $rootScope.site.username + ':' + $rootScope.site.password );
   var dataURL = '';
+  $scope.siteID = $stateParams.siteId;
+  $scope.ids = [];
 
   // Get slug such as 'comments' from our route, to use to fetch data
   if($rootScope.route) {
@@ -177,10 +180,15 @@ angular.module('wpApp.controllers', [])
   // Gets API data
   $scope.loadData = function() {
 
-    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+    DataLoader.getAuth( $rootScope.base64, dataURL ).then(function(response) {
 
         $scope.data = response.data;
         $ionicLoading.hide();
+
+        // Save all IDs so we can check for them in the loadmore func
+        angular.forEach( $scope.data, function( value, key ) {
+          $scope.ids.push(value.id);
+        });
 
       }, function(response) {
 
@@ -191,9 +199,13 @@ angular.module('wpApp.controllers', [])
 
   }
 
-  $scope.id = $stateParams.siteId;
+  var options = '';
 
-  dataURL = $rootScope.site.url + '/wp-json' + $rootScope.route;
+  if($scope.slug === 'comments') {
+    options = '?status';
+  }
+
+  dataURL = $rootScope.site.url + '/wp-json' + $rootScope.route + options;
 
   // Load data on page load
   $scope.loadData();
@@ -214,16 +226,18 @@ angular.module('wpApp.controllers', [])
 
     $timeout(function() {
 
-      DataLoader.get( dataURL + '?page=' + pg + '&' + $rootScope.callback ).then(function(response) {
-
-        // Prevent load more bug
-        if( response.data.length <= 0 || response.data[0].id === $scope.data[0].id || response.data[0].content === $scope.data[0].content ) {
-          $scope.moreItems = false;
-          return;
-        }
+      DataLoader.getAuth( $rootScope.base64, dataURL + '?page=' + pg ).then(function(response) {
 
         angular.forEach( response.data, function( value, key ) {
+
+          // Don't load more if item is not new
+          if( $scope.ids.indexOf(value.id) >= 0 ) {
+            $scope.moreItems = false;
+            return;
+          }
+
           $scope.data.push(value);
+          $scope.ids.push(value.id);
         });
 
       }, function(response) {
@@ -260,17 +274,13 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('CommentCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce ) {
+.controller('CommentCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce, $ionicHistory ) {
 
   console.log('CommentCtrl');
 
   $scope.siteID = $stateParams.siteId;
   $scope.slug = 'comments';
   $scope.itemID = $stateParams.itemId;
-
-  var username = $rootScope.site.username;
-  var password = $rootScope.site.password;
-  var siteURL = $rootScope.site.url;
 
   if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
     // Create cache
@@ -280,7 +290,7 @@ angular.module('wpApp.controllers', [])
   var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
 
   // API url to fetch data
-  var dataURL = siteURL + '/wp-json' + $rootScope.route + $scope.itemID;
+  var dataURL = $rootScope.site.url + '/wp-json' + $rootScope.route + $scope.itemID;
 
   if( !dataCache.get($scope.itemID) ) {
 
@@ -289,11 +299,12 @@ angular.module('wpApp.controllers', [])
     });
 
     // Item doesn't exists, so go get it
-    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
-        console.log(response.data);
+    DataLoader.getAuth( $rootScope.base64, dataURL ).then(function(response) {
+
         $scope.siteData = response.data;
         $scope.content = $sce.trustAsHtml(response.data.content.rendered);
         dataCache.put( response.data.id, response.data );
+        $scope.commentStatus = response.data.status;
 
         $ionicLoading.hide();
         // console.dir(response.data);
@@ -306,43 +317,46 @@ angular.module('wpApp.controllers', [])
     // Item exists, use localStorage
     $scope.siteData = dataCache.get( $scope.itemID );
     $scope.content = $sce.trustAsHtml( $scope.siteData.content.rendered );
+    $scope.commentStatus = $scope.siteData.status;
   }
 
   $scope.deleteComment = function() {
 
     // TODO: delete from cache after item deleted
 
-    var base64 = Base64.encode( username + ':' + password );
-
     var itemURL = $rootScope.site.url + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
 
-    console.log(base64 + itemURL);
+    DataLoader.delete( $rootScope.base64, itemURL ).then(function(response) {
 
-    DataLoader.delete( base64, itemURL ).then(function(response) {
+        // Remove item from cache
+        dataCache.remove($scope.siteData.id);
         alert('Item deleted');
-        console.dir(response.data);
+
+        // Go back to previous state. TODO: Deleted comment still exists in old state, need to remove it
+        $ionicHistory.goBack();
+
       }, function(response) {
-        console.log('Error: ' + response.data );
+        // Getting an error even if it's successful
+        console.log(response.data );
     });
   }
 
   $scope.approveComment = function(data) {
 
     var options = {
-      status: approved
+      'status': 'approved'
     }
 
-    var base64 = Base64.encode( username + ':' + password );
+    var itemURL = $rootScope.site.url + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
 
-    var itemURL = siteURL + '/wp-json/wp/v2/' + $scope.slug + '/' + $scope.siteData.id;
+    DataLoader.put( $rootScope.base64, itemURL, options ).then(function(response) {
 
-    console.log(base64 + itemURL);
+        dataCache.put( $scope.siteData.id, response.data );
+        alert('Item approved');
 
-    DataLoader.put( base64, itemURL, options ).then(function(response) {
-        alert('Item deleted');
-        console.dir(response.data);
       }, function(response) {
-        console.log('Error: ' + response.data );
+        // Getting an error even if it's successful
+        console.log(response.data );
     });
   }
 
@@ -358,10 +372,6 @@ angular.module('wpApp.controllers', [])
   $scope.slug = 'post';
   $scope.itemID = $stateParams.itemId;
 
-  var username = $rootScope.site.username;
-  var password = $rootScope.site.password;
-  var siteURL = $rootScope.site.url;
-
   if (!CacheFactory.get( 'site' + $scope.siteID + $scope.slug )) {
     // Create cache
     CacheFactory.createCache( 'site' + $scope.siteID + $scope.slug );
@@ -370,7 +380,7 @@ angular.module('wpApp.controllers', [])
   var dataCache = CacheFactory.get( 'site' + $scope.siteID + $scope.slug );
 
   // API url to fetch data
-  var dataURL = siteURL + '/wp-json' + $rootScope.route + $scope.itemID;
+  var dataURL = $rootScope.site.url + '/wp-json' + $rootScope.route + $scope.itemID;
 
   if( !dataCache.get($scope.itemID) ) {
 
@@ -379,7 +389,7 @@ angular.module('wpApp.controllers', [])
     });
 
     // Item doesn't exists, so go get it
-    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+    DataLoader.getAuth( $rootScope.base64, dataURL ).then(function(response) {
 
         $scope.siteData = response.data;
         $scope.content = $sce.trustAsHtml(response.data.content.rendered);
@@ -469,7 +479,7 @@ angular.module('wpApp.controllers', [])
     });
 
     // Item doesn't exists, so go get it
-    DataLoader.get( dataURL + '?' + $rootScope.callback ).then(function(response) {
+    DataLoader.getAuth( $rootScope.base64, dataURL ).then(function(response) {
         console.log(response.data);
         $scope.siteData = response.data;
         $scope.content = $sce.trustAsHtml(response.data.content.rendered);

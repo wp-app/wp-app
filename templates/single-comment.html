@@ -3,7 +3,7 @@
 	Comment
 	</ion-nav-title>
   	<ion-content>
-	<div class="card">
+	<div class="card {{commentStatus}}">
 		<div class="item item-body">
 			<h2 ng-bind-html="siteData.title.rendered"></h2>
 			<p ng-if="content" ng-bind-html="content"></p>
@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="item tabs tabs-secondary tabs-icon-left">
-		    <a class="tab-item" href="#" ng-click="approveComment()">
+		    <a ng-if="commentStatus == 'hold'" class="tab-item" href="#" ng-click="approveComment()">
 		      <i class="icon ion-edit"></i>
 		      Approve
 		    </a>
