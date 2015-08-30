@@ -1,4 +1,3 @@
-/* Empty. Add your own CSS if you like */
 .item-content p.post-excerpt {
 	white-space: wrap;
 }
@@ -66,4 +65,16 @@
 
 .settings input {
 	width: 100%;
+}
+
+/*** Comments ***/
+
+.pending-item-text {
+	font-size:12px;
+	text-transform: uppercase;
+	color:#999
+}
+
+.card.hold .item-body {
+	background-color: #fef7f1;
 }

@@ -15,6 +15,7 @@
 				<p ng-if="item.excerpt.rendered" ng-bind-html="item.excerpt.rendered"></p>
 				<p ng-if="item.author_name" ng-bind-html="item.content.rendered"></p>
 				<p ng-if="item.author_name" ng-bind-html="item.author_name"></p>
+				<span class="pending-item-text" ng-if="item.status == 'hold'">Pending Moderation</span>
 				<i class="icon ion-chevron-right icon-accessory"></i>
 			</ion-item>
 		</ion-list>

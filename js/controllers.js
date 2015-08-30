@@ -354,7 +354,7 @@ angular.module('wpApp.controllers', [])
 
       }, function(response) {
         // Getting an error even if it's successful
-        console.log(response.data );
+        console.log(response );
     });
   }
 
