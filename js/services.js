@@ -176,6 +176,7 @@ angular.module('wpApp.services', [])
 		getAllSites: getAllSites,
 		getSite: getSite,
 		count: count,
+		getNextID: getNextID,
 	};
 	
 	function initDB() {
@@ -184,7 +185,7 @@ angular.module('wpApp.services', [])
 	};
 	
 	function addSite( site ) {
-		return $q.when( _db.post( site ) );
+		return $q.when( _db.put( site ) );
 	}
 	
 	function updateSite( site ) {
@@ -225,6 +226,21 @@ angular.module('wpApp.services', [])
 		return $q.when( _db.info())
 			.then( function( info ) {
 				return info.doc_count;
+			});
+	}
+	
+	function getNextID() {
+		return $q.when( _db.allDocs( { descending: true, limit: 1 } ) )
+			.then( function( docs ) {
+				var nextID = 1;
+				if ( docs.total_rows == '1' ) {
+					var nextID = parseInt( docs.rows[0].id );
+					if ( nextID === '' ) {
+						nextID = 1;
+					}
+					nextID++;
+				}
+				return String( nextID );
 			});
 	}
 	

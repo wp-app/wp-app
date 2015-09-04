@@ -79,12 +79,16 @@ angular.module('wpApp.controllers', [])
 
     DataLoader.get( siteApi ).then(function(response) {
 
-        var site = { title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
+        SitesDB.getNextID().then( function( nextID ) {
+	       var site = { _id: nextID, title: response.data.name, description: response.data.description, url: siteURL, username: u.username, password: u.password };
 
-        // Add site to cache
-        SitesDB.addSite( site );
+	       // Add site to cache
+	       SitesDB.addSite( site );
+	
+	       $ionicLoading.hide();
 
-        $ionicLoading.hide();
+	    });
+	    
       }, function(response) {
         $ionicLoading.hide();
         alert('Please make sure the WP-API plugin is installed on your site.');
