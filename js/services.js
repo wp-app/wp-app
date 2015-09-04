@@ -185,20 +185,20 @@ angular.module('wpApp.services', [])
 	};
 	
 	function addSite( site ) {
-		return $q.when( _db.put( site ) );
+		return _db.put( site );
 	}
 	
 	function updateSite( site ) {
-		return $q.when( _db.put( site ) );
+		return _db.put( site );
 	}
 	
 	function deleteSite( site ) {
-		return $q.when( _db.remove( site ) );
+		return _db.remove( site );
 	}
 	
 	function getAllSites() {
 		if ( ! _sites ) {
-			return $q.when( _db.allDocs({ include_docs: true }))
+			return _db.allDocs( { include_docs: true } )
 				.then( function( docs ) {
 					
 					// Map the array to contain just the doc objects.
@@ -219,23 +219,23 @@ angular.module('wpApp.services', [])
 	}
 	
 	function getSite( id ) {
-		return $q.when( _db.get( id ) );
+		return _db.get( id );
 	}
 	
 	function count() {
-		return $q.when( _db.info())
+		return _db.info()
 			.then( function( info ) {
 				return info.doc_count;
 			});
 	}
 	
 	function getNextID() {
-		return $q.when( _db.allDocs( { descending: true, limit: 1 } ) )
+		return _db.allDocs( { descending: true, limit: 1 } )
 			.then( function( docs ) {
 				var nextID = 1;
-				if ( docs.total_rows == '1' ) {
+				if ( docs.total_rows != '0' ) {
 					var nextID = parseInt( docs.rows[0].id );
-					if ( nextID === '' ) {
+					if ( isNaN( nextID ) ) {
 						nextID = 1;
 					}
 					nextID++;
