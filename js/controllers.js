@@ -1,5 +1,9 @@
 angular.module('wpApp.controllers', [])
 
+/*
+ * TODO: Cached views don't update when item is deleted or changed, we need to check if anything changed on enter, and update the scope. Should be a background process so we don't affect performance.
+ */
+
 .controller('AppCtrl', function($scope, $rootScope, $localstorage ) {
 
   // Controller for main view, anything global should go here
@@ -84,10 +88,12 @@ angular.module('wpApp.controllers', [])
         // Add site to cache
         SitesDB.addSite( site );
 
+        // TODO: clear form fields here
+
         $ionicLoading.hide();
       }, function(response) {
         $ionicLoading.hide();
-        alert('Please make sure the WP-API plugin is installed on your site.');
+        alert('Please make sure the WP-API plugin v2 is installed on your site.');
         console.log('Site Factory error');
     });
 
@@ -129,7 +135,6 @@ angular.module('wpApp.controllers', [])
 
     // Add this to rootScope so we don't have to make a DB call in other controllers
     $rootScope.site = site;
-    console.log($rootScope.site);
 
 		// Example data
 		$scope.content = '<img src="img/male-circle-512.png" class="site-avatar" /><h2 class="padding">' + site.title + '</h2>';
@@ -143,8 +148,15 @@ angular.module('wpApp.controllers', [])
 		
 		// Example of adding a section
 		DataLoader.get( dataURL ).then(function(response) {
-		    // console.log( response.data );
-		    $scope.sitesections.push({ 'title': { 'rendered': response.data.title.rendered }, 'icon': response.data.icon, 'route': response.data.route });
+
+        angular.forEach( response.data, function( value, key ) {
+
+          console.log( value );
+
+          $scope.sitesections.push({ 'title': { 'rendered': value.title.rendered }, 'icon': value.icon, 'route': value.route });
+
+        });
+		    
 		    $ionicLoading.hide();
 		  }, function(response) {
 		    $ionicLoading.hide();
@@ -427,43 +439,6 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $ionicPlatform, SitesDB ) {
-
-  // Individual site settings, settings.html
-  $scope.settings = {};
-  //$scope.site = $rootScope.siteCache.get($stateParams.siteId);
-  
-  // Initialize the database.
-  $ionicPlatform.ready( function() {
-   SitesDB.initDB();
-   
-   SitesDB.getSite( $stateParams.siteId ).then( function( site ) {
-     $scope.site = site;
-     $scope.siteTitle = $scope.site.title;
-     $scope.settings.url = $scope.site.url;
-     $scope.settings.username = $scope.site.username;
-     $scope.settings.password = $scope.site.password;
-   });
-  });
-  
-
-  //$scope.$on( '$ionicView.leave', $scope.saveSettings );
-
-  $scope.saveSettings = function() {
-    //console.log($scope.settings);
-    $scope.site.url = $scope.settings.url;
-    $scope.site.username = $scope.settings.username;
-    $scope.site.password = $scope.settings.password;
-    //console.log($scope.site);
-    
-    SitesDB.updateSite( $scope.site ).then( function() {
-      alert('Saved!');
-  });
-    
-  }
-
-})
-
 .controller('AppPageCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout, $ionicPlatform, SitesDB, Base64 ) {
 
   // Single App Page view singe-apppage.html
@@ -473,7 +448,7 @@ angular.module('wpApp.controllers', [])
   $rootScope.siteCache = CacheFactory.get('siteCache');
 
   $scope.siteID = $stateParams.siteId;
-  $scope.slug = 'apppages';
+  $scope.slug = $stateParams.slug;
   $scope.itemID = $stateParams.itemId;
   
   var url = $rootScope.site.url;
@@ -488,6 +463,23 @@ angular.module('wpApp.controllers', [])
 
   // API url to fetch data
   var dataURL = url + '/wp-json' + $rootScope.route + $scope.itemID;
+
+  // Handle charts
+  $scope.loadChart = function(data) {
+
+    console.log('loading chart');
+
+    if(!data)
+      return;
+
+    $timeout( function() {
+
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var myNewChart = new Chart(ctx).Line( data );
+    
+    }, 1000);
+
+  }
 
   if( !dataCache.get($scope.itemID) ) {
 
@@ -522,23 +514,6 @@ angular.module('wpApp.controllers', [])
       $scope.loadChart( $scope.siteData.chart );
     }
   }
-  
-  // Handle charts
-  $scope.loadChart = function(data) {
-
-    console.log('loading chart');
-
-    if(!data)
-      return;
-
-    $timeout( function() {
-
-      var ctx = document.getElementById("myChart").getContext("2d");
-      var myNewChart = new Chart(ctx).Line( data );
-    
-    }, 1000);
-
-  }
 
 })
 
@@ -556,6 +531,43 @@ angular.module('wpApp.controllers', [])
       [65, 59, 80, 81, 56, 55, 40],
       [28, 48, 40, 19, 86, 27, 90]
   ];
+
+})
+
+.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $ionicPlatform, SitesDB ) {
+
+  // Individual site settings, settings.html
+  $scope.settings = {};
+  //$scope.site = $rootScope.siteCache.get($stateParams.siteId);
+  
+  // Initialize the database.
+  $ionicPlatform.ready( function() {
+   SitesDB.initDB();
+   
+   SitesDB.getSite( $stateParams.siteId ).then( function( site ) {
+     $scope.site = site;
+     $scope.siteTitle = $scope.site.title;
+     $scope.settings.url = $scope.site.url;
+     $scope.settings.username = $scope.site.username;
+     $scope.settings.password = $scope.site.password;
+   });
+  });
+  
+
+  //$scope.$on( '$ionicView.leave', $scope.saveSettings );
+
+  $scope.saveSettings = function() {
+    //console.log($scope.settings);
+    $scope.site.url = $scope.settings.url;
+    $scope.site.username = $scope.settings.username;
+    $scope.site.password = $scope.settings.password;
+    //console.log($scope.site);
+    
+    SitesDB.updateSite( $scope.site ).then( function() {
+      alert('Saved!');
+  });
+    
+  }
 
 })
 

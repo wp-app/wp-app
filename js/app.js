@@ -122,8 +122,9 @@ angular.module('wpApp', ['ionic','ionic.service.core', 'wpApp.controllers', 'wpA
     }
   })
 
+  // Default state for all custom added pages
   .state('app.apppages', {
-    url: "/sites/:siteId/apppages/:itemId",
+    url: "/sites/:siteId/:slug/:itemId",
     views: {
       'sites-view': {
         templateUrl: "templates/single-apppage.html",
