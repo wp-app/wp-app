@@ -24,7 +24,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading, CacheFactory, $ionicPlatform, SitesDB ) {
+.controller('SitesCtrl', function( $scope, $http, DataLoader, $timeout, $rootScope, $ionicModal, $localstorage, $ionicLoading, CacheFactory, $ionicPlatform, SitesDB, $log ) {
 
   // Sites view: templates/sites.html
   
@@ -94,7 +94,7 @@ angular.module('wpApp.controllers', [])
       }, function(response) {
         $ionicLoading.hide();
         alert('Please make sure the WP-API plugin v2 is installed on your site.');
-        console.log('Site Factory error');
+        $log.error(response);
     });
 
     $scope.sitemodal.hide();
@@ -105,7 +105,7 @@ angular.module('wpApp.controllers', [])
 
   $scope.onItemDelete = function(item) {
 
-    // console.log('Deleting site: ' + item.id);
+    // $log.log('Deleting site: ' + item.id);
 	    
     angular.forEach( window.localStorage, function( value, key ) {
 	    // find and delete all site[id] caches (pages,posts,comments,etc)
@@ -120,7 +120,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader, $state, $ionicPlatform, SitesDB ) {
+.controller('SiteCtrl', function($scope, $stateParams, $ionicLoading, $localstorage, $rootScope, DataLoader, $state, $ionicPlatform, SitesDB, $log ) {
 
   // Controller for single site detail page. templates/site.html
 
@@ -151,7 +151,7 @@ angular.module('wpApp.controllers', [])
 
         angular.forEach( response.data, function( value, key ) {
 
-          console.log( value );
+          $log.log( value );
 
           $scope.sitesections.push({ 'title': { 'rendered': value.title.rendered }, 'icon': value.icon, 'route': value.route });
 
@@ -160,7 +160,7 @@ angular.module('wpApp.controllers', [])
 		    $ionicLoading.hide();
 		  }, function(response) {
 		    $ionicLoading.hide();
-		    console.log('No custom site sections to get.');
+		    $log.log('No custom site sections to get.');
 		});
 
 	 });
@@ -173,7 +173,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout, $ionicPlatform, SitesDB, Base64, CacheFactory ) {
+.controller('SiteSectionCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, $timeout, $ionicPlatform, SitesDB, Base64, CacheFactory, $log ) {
 
   // Individual site data (posts, comments, pages, etc). templates/site-section.html. Should be broken into different controllers and templates for more fine-grained control
 
@@ -188,6 +188,16 @@ angular.module('wpApp.controllers', [])
     var slugindex = $rootScope.route.split('/').length - 2;
     $scope.slug = slug[slugindex];
   }
+
+  var options = '';
+
+  if($scope.slug === 'comments') {
+    options = '?status';
+  }
+
+  dataURL = $rootScope.site.url + '/wp-json' + $rootScope.route + options;
+
+  $log.log(dataURL);
   
   // Gets API data
   $scope.loadData = function() {
@@ -195,6 +205,7 @@ angular.module('wpApp.controllers', [])
     DataLoader.getAuth( $rootScope.base64, dataURL ).then(function(response) {
 
         $scope.data = response.data;
+        $log.log(response.data);
         $ionicLoading.hide();
 
         // Save all IDs so we can check for them in the loadmore func
@@ -204,20 +215,12 @@ angular.module('wpApp.controllers', [])
 
       }, function(response) {
 
-        console.log('Error');
+        $log.error(response);
         $ionicLoading.hide();
 
     });
 
   }
-
-  var options = '';
-
-  if($scope.slug === 'comments') {
-    options = '?status';
-  }
-
-  dataURL = $rootScope.site.url + '/wp-json' + $rootScope.route + options;
 
   // Load data on page load
   $scope.loadData();
@@ -234,7 +237,7 @@ angular.module('wpApp.controllers', [])
 
     var pg = paged++;
 
-    console.log('loading more...' + pg );
+    $log.log('loading more...' + pg );
 
     $timeout(function() {
 
@@ -254,7 +257,7 @@ angular.module('wpApp.controllers', [])
 
       }, function(response) {
         $scope.moreItems = false;
-        console.log('Load more error');
+        $log.error('Load more error');
       });
 
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -271,7 +274,7 @@ angular.module('wpApp.controllers', [])
   // Pull to refresh
   $scope.doRefresh = function() {
   
-    console.log('Refreshing!');
+    $log.log('Refreshing!');
 
     $timeout( function() {
 
@@ -286,9 +289,9 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('CommentCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce, $ionicHistory ) {
+.controller('CommentCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce, $ionicHistory, $log ) {
 
-  console.log('CommentCtrl');
+  $log.log('CommentCtrl');
 
   $scope.siteID = $stateParams.siteId;
   $scope.slug = 'comments';
@@ -321,7 +324,7 @@ angular.module('wpApp.controllers', [])
         $ionicLoading.hide();
         // console.dir(response.data);
       }, function(response) {
-        console.log('Error');
+        $log.error(response);
         $ionicLoading.hide();
     });
 
@@ -347,11 +350,13 @@ angular.module('wpApp.controllers', [])
 
       }, function(response) {
         // Getting an error even if it's successful
-        console.log(response.data );
+        $log.error(response.data );
     });
   }
 
   $scope.approveComment = function(data) {
+
+    // TODO: after approval, change class of .card.hold to .card.approved
 
     var options = {
       'status': 'approved'
@@ -366,17 +371,17 @@ angular.module('wpApp.controllers', [])
 
       }, function(response) {
         // Getting an error even if it's successful
-        console.log(response );
+        $log.error(response );
     });
   }
 
 })
 
-.controller('PostCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce, $ionicHistory ) {
+.controller('PostCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, SitesDB, Base64, $sce, $ionicHistory, $log ) {
 
   // Controller for posts and pages single-post.html
 
-  console.log('PostCtrl');
+  $log.log('PostCtrl');
 
   $scope.siteID = $stateParams.siteId;
   $scope.slug = 'posts';
@@ -408,7 +413,7 @@ angular.module('wpApp.controllers', [])
         $ionicLoading.hide();
         // console.dir(response.data);
       }, function(response) {
-        console.log('Error');
+        $log.error(response);
         $ionicLoading.hide();
     });
 
@@ -433,17 +438,17 @@ angular.module('wpApp.controllers', [])
 
       }, function(response) {
         // Getting an error even if it's successful
-        console.log(response.data );
+        $log.error(response.data );
     });
   }
 
 })
 
-.controller('AppPageCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout, $ionicPlatform, SitesDB, Base64 ) {
+.controller('AppPageCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $localstorage, CacheFactory, $sce, $timeout, $ionicPlatform, SitesDB, Base64, $log ) {
 
   // Single App Page view singe-apppage.html
 
-  console.log('apppagectrl');
+  $log.log('apppagectrl');
 
   $rootScope.siteCache = CacheFactory.get('siteCache');
 
@@ -467,7 +472,7 @@ angular.module('wpApp.controllers', [])
   // Handle charts
   $scope.loadChart = function(data) {
 
-    console.log('loading chart');
+    $log.log('loading chart');
 
     if(!data)
       return;
@@ -489,7 +494,7 @@ angular.module('wpApp.controllers', [])
 
     // Item doesn't exists, so go get it
     DataLoader.getAuth( $rootScope.base64, dataURL ).then(function(response) {
-        console.log(response.data);
+        $log.log(response.data);
         $scope.siteData = response.data;
         $scope.content = $sce.trustAsHtml(response.data.content.rendered);
         dataCache.put( response.data.id, response.data );
@@ -501,7 +506,7 @@ angular.module('wpApp.controllers', [])
         $ionicLoading.hide();
         // console.dir(response.data);
       }, function(response) {
-        console.log('Error');
+        $log.error(response);
         $ionicLoading.hide();
     });
 
@@ -534,7 +539,7 @@ angular.module('wpApp.controllers', [])
 
 })
 
-.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $ionicPlatform, SitesDB ) {
+.controller('SiteSettingsCtrl', function($scope, $stateParams, DataLoader, $ionicLoading, $rootScope, $ionicPlatform, SitesDB, $log ) {
 
   // Individual site settings, settings.html
   $scope.settings = {};
@@ -557,11 +562,11 @@ angular.module('wpApp.controllers', [])
   //$scope.$on( '$ionicView.leave', $scope.saveSettings );
 
   $scope.saveSettings = function() {
-    //console.log($scope.settings);
+    //$log.log($scope.settings);
     $scope.site.url = $scope.settings.url;
     $scope.site.username = $scope.settings.username;
     $scope.site.password = $scope.settings.password;
-    //console.log($scope.site);
+    //$log.log($scope.site);
     
     SitesDB.updateSite( $scope.site ).then( function() {
       alert('Saved!');
