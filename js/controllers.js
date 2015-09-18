@@ -142,7 +142,7 @@ angular.module('wpApp.controllers', [])
 		var url = site.url;
 		
 		// Default sections, can be passed in from somewhere else
-		$scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'}, {'title': { 'rendered': 'Users' }, 'icon':'ion-person', 'route':'/wp/v2/users/'}];
+		$scope.sitesections = [{'title': { 'rendered': 'Comments' }, 'icon':'ion-ios-chatbubble-outline', 'route':'/wp/v2/comments/' }, {'title': { 'rendered': 'Posts' }, 'icon':'ion-ios-browsers-outline', 'route':'/wp/v2/posts/' },{'title': { 'rendered': 'Pages' }, 'icon':'ion-ios-paper-outline', 'route':'/wp/v2/pages/'}];
 		
 		var dataURL = url + '/wp-json/wp-app/v1/app/?' + $rootScope.callback;
 		
