@@ -1,0 +1,7 @@
+<div class="list" track>
+  <div class="aligncenter" ng-if="(!postListCtrl.infiniteScroll && !postListCtrl.list) || postListCtrl.searching">
+    <ion-spinner icon="spiral"></ion-spinner>
+  </div>
+  <div class="list-container"></div>
+  <ion-infinite-scroll immediate-check="postListCtrl.immediateCheck" ng-if="postListCtrl.infiniteScroll && !postListCtrl.isPaginationOver" on-infinite="postListCtrl.loadMore()" spinner="spiral" distance="35%"></ion-infinite-scroll>
+</div>

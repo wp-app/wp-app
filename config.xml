@@ -1,69 +1,106 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.wpadmin.app" version="1.0.0">
-   <name>WP App</name>
-   <description>An open source WordPress management app</description>
-   <author href="http://scottbolinger.com" email="scott@apppresser.com">Scott Bolinger</author>
-
-	<gap:platform name="ios" />
-	<gap:platform name="android" />
-
-	<preference name="phonegap-version" value="3.7.0" />
-	<preference name="targetSdkVersion" value="14" />
-
-	<feature name="http://api.phonegap.com/1.0/device" />
-	<gap:plugin name="org.apache.cordova.device" />
-	<gap:plugin name="org.apache.cordova.splashscreen" />
-	<gap:plugin name="org.apache.cordova.inappbrowser" />
-	<gap:plugin name="org.apache.cordova.dialogs" />
-	<gap:plugin name="org.apache.cordova.vibration" />
-	<gap:plugin name="org.apache.cordova.network-information" />
-	<gap:plugin name="com.phonegap.plugin.statusbar" />
-	<gap:plugin name="nl.x-services.plugins.socialsharing" />
-
-	<preference name="AutoHideSplashScreen" value="true" />
-	<preference name="SplashScreenDelay" value="1000" />
-	<preference name="StatusBarOverlaysWebView" value="true" />
-	<preference name="ShowSplashScreenSpinner" value="false" />
-	<preference name="DisallowOverscroll" value="true" />
-
-	<icon src="res/icon/ios/icon-57.png" gap:platform="ios" width="57" height="57" />
-	<icon src="res/icon/ios/icon-72.png" gap:platform="ios" width="72" height="72" />
-	<icon src="res/icon/ios/icon-57-2x.png" gap:platform="ios" width="114" height="114" />
-	<icon src="res/icon/ios/icon-72-2x.png" gap:platform="ios" width="144" height="144" />
-
-	<icon src="res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi" />
-	<icon src="res/icon/android/icon-48-mdpi.png" gap:platform="android" gap:qualifier="mdpi" />
-	<icon src="res/icon/android/icon-72-hdpi.png" gap:platform="android" gap:qualifier="hdpi" />
-	<icon src="res/icon/android/icon-96-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi" />
-
-	<gap:splash src="splash.png"/>
-
-	<gap:splash src="res/screen/android/screen-hdpi-landscape.png" gap:platform="android" gap:qualifier="land-hdpi" />
-	<gap:splash src="res/screen/android/screen-hdpi-portrait.png" gap:platform="android" gap:qualifier="port-hdpi" />
-	<gap:splash src="res/screen/android/screen-ldpi-landscape.png" gap:platform="android" gap:qualifier="land-ldpi" />
-	<gap:splash src="res/screen/android/screen-ldpi-portrait.png" gap:platform="android" gap:qualifier="port-ldpi" />
-	<gap:splash src="res/screen/android/screen-mdpi-landscape.png" gap:platform="android" gap:qualifier="land-mdpi" />
-	<gap:splash src="res/screen/android/screen-mdpi-portrait.png" gap:platform="android" gap:qualifier="port-mdpi" />
-	<gap:splash src="res/screen/android/screen-xhdpi-landscape.png" gap:platform="android" gap:qualifier="land-xhdpi" />
-	<gap:splash src="res/screen/android/screen-xhdpi-portrait.png" gap:platform="android" gap:qualifier="port-xhdpi" />
-
-	<gap:splash src="res/screen/ios/screen-iphone-portrait.png" gap:platform="ios" width="320" height="480" />
-	<gap:splash src="res/screen/ios/screen-iphone-portrait-2x.png" gap:platform="ios" width="640" height="960" />
-	<gap:splash src="res/screen/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640" height="1136" />
-	<gap:splash src="res/screen/ios/screen-ipad-landscape.png" gap:platform="ios" width="1024" height="768" />
-	<gap:splash src="res/screen/ios/screen-ipad-portrait.png" gap:platform="ios" width="768" height="1024" />
-	<gap:splash src="res/screen/ios/screen-ipad-landscape-2x.png" gap:platform="ios" width="2048" height="1496" />
-	<gap:splash src="res/screen/ios/screen-ipad-portrait-2x.png" gap:platform="ios" width="1536" height="2008" />
-	<gap:splash src="res/screen/ios/screen-iphone6-portrait.png" gap:platform="ios" width="750" height="1334" />
-	<gap:splash src="res/screen/ios/screen-iphone6-landscape.png" gap:platform="ios" width="1334" height="750" />
-	<gap:splash src="res/screen/ios/screen-iphone6-plus-portrait.png" gap:platform="ios" width="1242" height="2208" />
-	<gap:splash src="res/screen/ios/screen-iphone6-plus-landscape.png" gap:platform="ios" width="2208" height="1242" />
-
-	<icon src="icon.png" />
-	<content src="index.html" />
-	<access origin="*" subdomains="true" />
-	<access origin="mailto:*" launch-external="yes" />
-	<access origin="tel:*" launch-external="yes" />
-
+  <name>WP App</name>
+  <description>An open source WordPress management app</description>
+  <author href="http://scottbolinger.com" email="scott@apppresser.com">Scott Bolinger</author>
+  <gap:platform name="ios"/>
+  <gap:platform name="android"/>
+  <preference name="phonegap-version" value="3.7.0"/>
+  <preference name="targetSdkVersion" value="14"/>
+  <preference name="AutoHideSplashScreen" value="true"/>
+  <preference name="SplashScreenDelay" value="1000"/>
+  <preference name="StatusBarOverlaysWebView" value="true"/>
+  <preference name="ShowSplashScreenSpinner" value="false"/>
+  <preference name="DisallowOverscroll" value="true"/>
+  <preference name="SplashScreen" value="screen"/>
+  <feature name="http://api.phonegap.com/1.0/device"/>
+  <gap:plugin name="org.apache.cordova.device"/>
+  <gap:plugin name="org.apache.cordova.splashscreen"/>
+  <gap:plugin name="org.apache.cordova.inappbrowser"/>
+  <gap:plugin name="org.apache.cordova.dialogs"/>
+  <gap:plugin name="org.apache.cordova.vibration"/>
+  <gap:plugin name="org.apache.cordova.network-information"/>
+  <gap:plugin name="com.phonegap.plugin.statusbar"/>
+  <gap:plugin name="nl.x-services.plugins.socialsharing"/>
+  <icon src="res/icon/ios/icon-57.png" gap:platform="ios" width="57" height="57"/>
+  <icon src="res/icon/ios/icon-72.png" gap:platform="ios" width="72" height="72"/>
+  <icon src="res/icon/ios/icon-57-2x.png" gap:platform="ios" width="114" height="114"/>
+  <icon src="res/icon/ios/icon-72-2x.png" gap:platform="ios" width="144" height="144"/>
+  <icon src="res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
+  <icon src="res/icon/android/icon-48-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
+  <icon src="res/icon/android/icon-72-hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
+  <icon src="res/icon/android/icon-96-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
+  <icon src="icon.png"/>
+  <gap:splash src="splash.png"/>
+  <gap:splash src="res/screen/android/screen-hdpi-landscape.png" gap:platform="android" gap:qualifier="land-hdpi"/>
+  <gap:splash src="res/screen/android/screen-hdpi-portrait.png" gap:platform="android" gap:qualifier="port-hdpi"/>
+  <gap:splash src="res/screen/android/screen-ldpi-landscape.png" gap:platform="android" gap:qualifier="land-ldpi"/>
+  <gap:splash src="res/screen/android/screen-ldpi-portrait.png" gap:platform="android" gap:qualifier="port-ldpi"/>
+  <gap:splash src="res/screen/android/screen-mdpi-landscape.png" gap:platform="android" gap:qualifier="land-mdpi"/>
+  <gap:splash src="res/screen/android/screen-mdpi-portrait.png" gap:platform="android" gap:qualifier="port-mdpi"/>
+  <gap:splash src="res/screen/android/screen-xhdpi-landscape.png" gap:platform="android" gap:qualifier="land-xhdpi"/>
+  <gap:splash src="res/screen/android/screen-xhdpi-portrait.png" gap:platform="android" gap:qualifier="port-xhdpi"/>
+  <gap:splash src="res/screen/ios/screen-iphone-portrait.png" gap:platform="ios" width="320" height="480"/>
+  <gap:splash src="res/screen/ios/screen-iphone-portrait-2x.png" gap:platform="ios" width="640" height="960"/>
+  <gap:splash src="res/screen/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640" height="1136"/>
+  <gap:splash src="res/screen/ios/screen-ipad-landscape.png" gap:platform="ios" width="1024" height="768"/>
+  <gap:splash src="res/screen/ios/screen-ipad-portrait.png" gap:platform="ios" width="768" height="1024"/>
+  <gap:splash src="res/screen/ios/screen-ipad-landscape-2x.png" gap:platform="ios" width="2048" height="1496"/>
+  <gap:splash src="res/screen/ios/screen-ipad-portrait-2x.png" gap:platform="ios" width="1536" height="2008"/>
+  <gap:splash src="res/screen/ios/screen-iphone6-portrait.png" gap:platform="ios" width="750" height="1334"/>
+  <gap:splash src="res/screen/ios/screen-iphone6-landscape.png" gap:platform="ios" width="1334" height="750"/>
+  <gap:splash src="res/screen/ios/screen-iphone6-plus-portrait.png" gap:platform="ios" width="1242" height="2208"/>
+  <gap:splash src="res/screen/ios/screen-iphone6-plus-landscape.png" gap:platform="ios" width="2208" height="1242"/>
+  <content src="index.html"/>
+  <access origin="*" subdomains="true"/>
+  <access origin="mailto:*" launch-external="yes"/>
+  <access origin="tel:*" launch-external="yes"/>
+  <platform name="ios">
+    <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
+    <icon src="resources/ios/icon/icon@2x.png" width="114" height="114"/>
+    <icon src="resources/ios/icon/icon-40.png" width="40" height="40"/>
+    <icon src="resources/ios/icon/icon-40@2x.png" width="80" height="80"/>
+    <icon src="resources/ios/icon/icon-50.png" width="50" height="50"/>
+    <icon src="resources/ios/icon/icon-50@2x.png" width="100" height="100"/>
+    <icon src="resources/ios/icon/icon-60.png" width="60" height="60"/>
+    <icon src="resources/ios/icon/icon-60@2x.png" width="120" height="120"/>
+    <icon src="resources/ios/icon/icon-60@3x.png" width="180" height="180"/>
+    <icon src="resources/ios/icon/icon-72.png" width="72" height="72"/>
+    <icon src="resources/ios/icon/icon-72@2x.png" width="144" height="144"/>
+    <icon src="resources/ios/icon/icon-76.png" width="76" height="76"/>
+    <icon src="resources/ios/icon/icon-76@2x.png" width="152" height="152"/>
+    <icon src="resources/ios/icon/icon-small.png" width="29" height="29"/>
+    <icon src="resources/ios/icon/icon-small@2x.png" width="58" height="58"/>
+    <icon src="resources/ios/icon/icon-small@3x.png" width="87" height="87"/>
+    <splash src="resources/ios/splash/Default-568h@2x~iphone.png" height="1136" width="640"/>
+    <splash src="resources/ios/splash/Default-667h.png" height="1334" width="750"/>
+    <splash src="resources/ios/splash/Default-736h.png" height="2208" width="1242"/>
+    <splash src="resources/ios/splash/Default-Landscape-736h.png" height="1242" width="2208"/>
+    <splash src="resources/ios/splash/Default-Landscape@2x~ipad.png" height="1536" width="2048"/>
+    <splash src="resources/ios/splash/Default-Landscape~ipad.png" height="768" width="1024"/>
+    <splash src="resources/ios/splash/Default-Portrait@2x~ipad.png" height="2048" width="1536"/>
+    <splash src="resources/ios/splash/Default-Portrait~ipad.png" height="1024" width="768"/>
+    <splash src="resources/ios/splash/Default@2x~iphone.png" height="960" width="640"/>
+    <splash src="resources/ios/splash/Default~iphone.png" height="480" width="320"/>
+  </platform>
+  <platform name="android">
+    <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
+    <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
+    <icon src="resources/android/icon/drawable-hdpi-icon.png" density="hdpi"/>
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" density="xhdpi"/>
+    <icon src="resources/android/icon/drawable-xxhdpi-icon.png" density="xxhdpi"/>
+    <icon src="resources/android/icon/drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
+    <splash src="resources/android/splash/drawable-land-ldpi-screen.png" density="land-ldpi"/>
+    <splash src="resources/android/splash/drawable-land-mdpi-screen.png" density="land-mdpi"/>
+    <splash src="resources/android/splash/drawable-land-hdpi-screen.png" density="land-hdpi"/>
+    <splash src="resources/android/splash/drawable-land-xhdpi-screen.png" density="land-xhdpi"/>
+    <splash src="resources/android/splash/drawable-land-xxhdpi-screen.png" density="land-xxhdpi"/>
+    <splash src="resources/android/splash/drawable-land-xxxhdpi-screen.png" density="land-xxxhdpi"/>
+    <splash src="resources/android/splash/drawable-port-ldpi-screen.png" density="port-ldpi"/>
+    <splash src="resources/android/splash/drawable-port-mdpi-screen.png" density="port-mdpi"/>
+    <splash src="resources/android/splash/drawable-port-hdpi-screen.png" density="port-hdpi"/>
+    <splash src="resources/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
+    <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
+    <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+  </platform>
 </widget>

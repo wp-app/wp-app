@@ -1,0 +1,1335 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"go",
+				"goBack"
+			],
+			[
+				"Commen",
+				"CommentCtrl"
+			],
+			[
+				"option",
+				"optionalData"
+			],
+			[
+				"J",
+				"July"
+			],
+			[
+				"cordova",
+				"cordova-core"
+			],
+			[
+				"notific",
+				"notificationCallback"
+			],
+			[
+				"pw",
+				"pwVal"
+			],
+			[
+				"app",
+				"append"
+			],
+			[
+				"nav",
+				"navParams"
+			],
+			[
+				"menu",
+				"menu_exists"
+			],
+			[
+				"Vid",
+				"videoSrc"
+			],
+			[
+				"index",
+				"indexOf"
+			],
+			[
+				"get_ap",
+				"get_apps_using_design"
+			],
+			[
+				"site",
+				"site_url"
+			],
+			[
+				"valid",
+				"validate_image_path"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"apppage",
+				"apppage_detail_options"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"delete",
+				"delete_aws_user"
+			],
+			[
+				"delet",
+				"delete_aws_user"
+			],
+			[
+				"auth",
+				"auth_token"
+			],
+			[
+				"sani",
+				"app_id_sanitize"
+			],
+			[
+				"get_app",
+				"get_app_title"
+			],
+			[
+				"funct",
+				"function_exists"
+			],
+			[
+				"get_current",
+				"get_current_user_id"
+			],
+			[
+				"Key",
+				"keySelect"
+			],
+			[
+				"keyse",
+				"keySelectVal"
+			],
+			[
+				"key",
+				"keyPassword"
+			],
+			[
+				"post",
+				"post_meta_array"
+			],
+			[
+				"AppPre",
+				"AppPresser_Reactor_PGB_API"
+			],
+			[
+				"p1",
+				"p12filepath"
+			],
+			[
+				"App",
+				"AppPresser_Reactor"
+			],
+			[
+				"arns",
+				"arnsString"
+			],
+			[
+				"slide",
+				"slideDown"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"delete_aws",
+				"delete_aws_everything"
+			],
+			[
+				"gcm",
+				"gcm_arn"
+			],
+			[
+				"list",
+				"list_subscribers"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"new",
+				"new_status"
+			],
+			[
+				"create",
+				"create_aws_applications"
+			],
+			[
+				"put",
+				"put_user_policy"
+			],
+			[
+				"aws",
+				"aws_setup"
+			],
+			[
+				"subs",
+				"subscribersAndroid"
+			],
+			[
+				"sub",
+				"subscribersIos"
+			],
+			[
+				"prin",
+				"print_r"
+			],
+			[
+				"bac",
+				"background-color"
+			],
+			[
+				"pad",
+				"padding-left"
+			],
+			[
+				"php",
+				"php"
+			],
+			[
+				"_",
+				"_FILES"
+			],
+			[
+				"rec",
+				"receivedEvent"
+			],
+			[
+				"single",
+				"single-product"
+			],
+			[
+				"prod",
+				"product_meta_wrap"
+			],
+			[
+				"box-si",
+				"box-sizing"
+			],
+			[
+				"jq",
+				"jqreadyn	jQuery Ready No Conflict"
+			],
+			[
+				"a",
+				"Automattic"
+			],
+			[
+				"bgi",
+				"bgi:n	background-image:none"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "<ion-modal-view>\n  <ion-header-bar class=\"bar bar-header bar-dark\">\n    <h1 class=\"title\">New Site</h1>\n    <button class=\"button button-clear button-primary\" ng-click=\"sitemodal.hide()\">Cancel</button>\n  </ion-header-bar>\n  <ion-content class=\"padding\">\n    <div class=\"list\">\n      <label class=\"item item-input\">\n        <span class=\"input-label\">Username</span>\n        <input ng-model=\"newSite.username\" type=\"text\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\">\n      </label>\n      <label class=\"item item-input\">\n        <span class=\"input-label\">Password</span>\n        <input ng-model=\"newSite.password\" type=\"password\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\">\n      </label>\n      <label class=\"item item-input\">\n        <span class=\"input-label\">Site URL</span>\n        <input ng-model=\"newSite.url\" type=\"url\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\">\n      </label>\n      <button class=\"button button-full button-dark\" ng-click=\"createSite(newSite)\">Create</button>\n    </div>\n  </ion-content>\n</ion-modal-view>",
+			"file": "www/templates/add-site-modal.html",
+			"file_size": 1129,
+			"file_write_time": 130851878190000000,
+			"settings":
+			{
+				"buffer_size": 1129,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "wp-app.sublime-project",
+			"settings":
+			{
+				"buffer_size": 45,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<ion-view>\n	<ion-nav-title>\n	{{siteData.title.rendered}}\n	</ion-nav-title>\n  	<ion-content>\n	<div class=\"card\">\n		<div class=\"item item-body\">\n			<h2 ng-bind-html=\"siteData.title.rendered\"></h2>\n			<p ng-if=\"content\" ng-bind-html=\"content\"></p>\n			<p ng-if=\"siteData.author_name\" ng-bind-html=\"siteData.author_name\"></p>\n			<img ng-if=\"siteData.media_details\" ng-src=\"{{siteData.media_details.sizes.medium.source_url}}\" />\n		</div>\n\n		<div class=\"item tabs tabs-secondary tabs-icon-left\">\n		    <a class=\"tab-item\" href=\"#\">\n		      <i class=\"icon ion-forward\"></i>\n		      View\n		    </a>\n		    <a class=\"tab-item\" href=\"#\" ng-click=\"deletePost()\">\n		      <i class=\"icon ion-ios-close-empty\"></i>\n		      Delete\n		    </a>\n		  </div>\n	</div>\n    </ion-content>\n</ion-view>\n",
+			"file": "www/templates/single-post.html",
+			"file_size": 775,
+			"file_write_time": 130853605510000000,
+			"settings":
+			{
+				"buffer_size": 775,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<ion-view>\n	<ion-nav-title>\n	App Page\n	</ion-nav-title>\n  	<ion-content>\n	<div class=\"card\">\n		<div class=\"item item-body\">\n			<h2 ng-bind-html=\"siteData.title.rendered\"></h2>\n			<p ng-if=\"content\" ng-bind-html=\"content\"></p>\n			<p ng-if=\"siteData.author_name\" ng-bind-html=\"siteData.author_name\"></p>\n			<img ng-if=\"siteData.media_details\" ng-src=\"{{siteData.media_details.sizes.medium.source_url}}\" />\n		</div>\n\n		<div class=\"item tabs tabs-secondary tabs-icon-left\">\n		    <a class=\"tab-item\" href=\"#\" ng-click=\"updateItem()\">\n		      <i class=\"icon ion-edit\"></i>\n		      {{button1}}\n		    </a>\n		    <a class=\"tab-item\" href=\"#\">\n		      <i class=\"icon ion-forward\"></i>\n		      View\n		    </a>\n		    <a class=\"tab-item\" href=\"#\" ng-click=\"deleteItem()\">\n		      <i class=\"icon ion-ios-close-empty\"></i>\n		      Delete\n		    </a>\n		  </div>\n	</div>\n    </ion-content>\n</ion-view>\n",
+			"file": "www/templates/single-apppage.html",
+			"file_size": 885,
+			"file_write_time": 130851881490000000,
+			"settings":
+			{
+				"buffer_size": 885,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<ion-view>\n	<ion-nav-title>\n	{{slug}}\n	</ion-nav-title>\n  	<ion-content>\n	<div class=\"card\">\n		<div class=\"item item-body\">\n			<h2 ng-bind-html=\"siteData.title.rendered\"></h2>\n			<p ng-if=\"content\" ng-bind-html=\"content\"></p>\n			<p ng-if=\"siteData.author_name\" ng-bind-html=\"siteData.author_name\"></p>\n			<img ng-if=\"siteData.media_details\" ng-src=\"{{siteData.media_details.sizes.medium.source_url}}\" />\n		</div>\n\n		<div class=\"item tabs tabs-secondary tabs-icon-left\">\n		    <a class=\"tab-item\" href=\"#\" ng-click=\"updateItem()\">\n		      <i class=\"icon ion-edit\"></i>\n		      {{button1}}\n		    </a>\n		    <a class=\"tab-item\" href=\"#\">\n		      <i class=\"icon ion-forward\"></i>\n		      View\n		    </a>\n		    <a class=\"tab-item\" href=\"#\" ng-click=\"deleteItem()\">\n		      <i class=\"icon ion-ios-close-empty\"></i>\n		      Delete\n		    </a>\n		  </div>\n	</div>\n    </ion-content>\n</ion-view>\n",
+			"file": "www/templates/site-section-details.html",
+			"file_size": 885,
+			"file_write_time": 130870900140000000,
+			"settings":
+			{
+				"buffer_size": 885,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<!-- js/controllers.js 'SiteSectionCtrl' -->\n<ion-view>\n\n	<ion-nav-title>\n	{{slug}}\n	</ion-nav-title>\n\n  	<ion-content>\n\n  		<ion-refresher on-refresh=\"doRefresh()\"></ion-refresher>\n\n		<ion-list>\n			<ion-item class=\"item-icon-right\" ng-repeat=\"item in data\" href=\"#/app/sites/{{siteID}}/{{slug}}/{{item.id}}\">\n				<h2 ng-bind-html=\"item.title.rendered\"></h2>\n				<p ng-if=\"item.excerpt.rendered\" ng-bind-html=\"item.excerpt.rendered\"></p>\n				<p ng-if=\"item.author_name\" ng-bind-html=\"item.content.rendered\"></p>\n				<p ng-if=\"item.author_name\" ng-bind-html=\"item.author_name\"></p>\n				<span class=\"pending-item-text\" ng-if=\"item.status == 'hold'\">Pending Moderation</span>\n				<i class=\"icon ion-chevron-right icon-accessory\"></i>\n			</ion-item>\n		</ion-list>\n\n		<ion-infinite-scroll\n			ng-if=\"moreDataExists()\"\n			on-infinite=\"loadMore()\"\n			distance=\"1%\">\n		</ion-infinite-scroll>\n\n    </ion-content>\n\n</ion-view>",
+			"file": "www/templates/site-section.html",
+			"file_size": 915,
+			"file_write_time": 130870900140000000,
+			"settings":
+			{
+				"buffer_size": 915,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": ".item-content p.post-excerpt {\n	white-space: wrap;\n}\n\n.slider {\n  height: 100%;\n}\n.slider-slide {\n  padding-top: 80px;\n  color: #000;\n  background: url('../img/blurry-app-bg.png') no-repeat center top;\n  background-size: cover;\n  text-align: center;\n\n  font-family: \"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, Arial, \"Lucida Grande\", sans-serif; \n  font-weight: 300;\n}\n\n.slide-content {\n	position: absolute;\n	bottom: 200px;\n	width: 100%;\n	padding: 20px;\n	box-sizing: border-box;\n}\n\n.slide-content h3 {\n	color: #fff;\n	margin-bottom: 40px;\n}\n\n.bar .button.button-icon.site-plus-icon::before, .site-icon::before {\n	font-size: 24px;\n}\n\n.menu-left {\n	background-color: #333;\n}\n\n.menu-left .item {\n	color: #eee;\n	border-color: #555;\n}\n\n.menu-left .item, .menu-left .item-complex .item-content {\n	background-color: transparent;\n}\n\n.card .tabs-secondary {\n	background-color: #fafafa;\n}\n\n.site-avatar {\n	float: left;\n	max-width: 50px;\n	display: block;\n	margin: 0 15px 15px;\n}\n\n.item-body img {\n	display: block;\n	max-width: 100%;\n	height: auto;\n}\n\n.settings input {\n	width: 100%;\n}\n\n/*** Comments ***/\n\n.pending-item-text {\n	font-size:12px;\n	text-transform: uppercase;\n	color:#999\n}\n\n.card.hold .item-body {\n	background-color: #fef7f1;\n}",
+			"file": "www/css/style.css",
+			"file_size": 1259,
+			"file_write_time": 130854191850000000,
+			"settings":
+			{
+				"buffer_size": 1259,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<ion-view>\n	<ion-nav-title>\n	Comment\n	</ion-nav-title>\n  	<ion-content>\n	<div class=\"card {{commentStatus}}\">\n		<div class=\"item item-body\">\n			<h2 ng-bind-html=\"siteData.title.rendered\"></h2>\n			<p ng-if=\"content\" ng-bind-html=\"content\"></p>\n			<p ng-if=\"siteData.author_name\" ng-bind-html=\"siteData.author_name\"></p>\n			<img ng-if=\"siteData.media_details\" ng-src=\"{{siteData.media_details.sizes.medium.source_url}}\" />\n		</div>\n\n		<div class=\"item tabs tabs-secondary tabs-icon-left\">\n		    <a ng-if=\"commentStatus == 'hold'\" class=\"tab-item\" href=\"#\" ng-click=\"approveComment()\">\n		      <i class=\"icon ion-edit\"></i>\n		      Approve\n		    </a>\n		    <a class=\"tab-item\" href=\"#\">\n		      <i class=\"icon ion-forward\"></i>\n		      View\n		    </a>\n		    <a class=\"tab-item\" href=\"#\" ng-click=\"deleteComment()\">\n		      <i class=\"icon ion-ios-close-empty\"></i>\n		      Delete\n		    </a>\n		  </div>\n	</div>\n    </ion-content>\n</ion-view>\n",
+			"file": "www/templates/single-comment.html",
+			"file_size": 937,
+			"file_write_time": 130853501170000000,
+			"settings":
+			{
+				"buffer_size": 937,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"ht",
+				"Set Syntax: HTML"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"sass",
+				"Set Syntax: Sass"
+			],
+			[
+				"clos",
+				"File: Close All"
+			],
+			[
+				"proje",
+				"Project: Save As"
+			],
+			[
+				"sav",
+				"Project: Save As"
+			],
+			[
+				"htm",
+				"Set Syntax: HTML"
+			],
+			[
+				"snip",
+				"Snippet: if"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"h",
+				"Set Syntax: HTML"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"j",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"css",
+				"Set Syntax: CSS"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"setting",
+				"Preferences: Settings - Default"
+			],
+			[
+				"settin",
+				"Preferences: Settings - User"
+			],
+			[
+				"side",
+				"View: Toggle Side Bar"
+			],
+			[
+				"syntax cs",
+				"Set Syntax: CSS"
+			]
+		],
+		"width": 584.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/"
+	],
+	"file_history":
+	[
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/wp-app.sublime-workspace",
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/www/js/app.js",
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/www/js/controllers.js",
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/www/js/services.js",
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/www/templates/single-post.html",
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/www/templates/single-comment.html",
+		"/Users/scottopolis/Graphic Art/git tower/wp-app/README.md",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/functions.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/content-single.php",
+		"/Users/scottopolis/Graphic Art/AppPresser/apppresser.com/docs/extensions/apptheme/index.md",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appwoo/inc/AppPresser_WooCommerce_Mods.php",
+		"/Users/scottopolis/Graphic Art/AppPresser/apppresser.com/docs/getting_started/tutorials/add_ajax_loading.md",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/inc/classes/AppPresser_Theme_Setup.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/inc/init.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/dev/_content.scss",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/inc/AppBuddy_Modal_Buttons.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/content-cardlist.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/inc/classes/AppPresser_Tags.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/js/appp.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/apppresser.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/js/custom.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/dev/_base.scss",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/readme.txt",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appcamera/js/appp-camera.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/style.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/inc/EDD_SL_Theme_Updater.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appcamera/appp-camera.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme-child/functions.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/js/appp-push-init.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/inc/AppBuddy_Notifications.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/appp-push.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appgeo/inc/AppPresser_GeoLocation_Update.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appgeo/inc/AppPresser_GeoLocation_Shortcode.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appgeo/apppresser-geolocation.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/inc/AppPresser_Notifications_Update.php",
+		"/Users/scottopolis/Graphic Art/AppPresser/apppresser.com/docs/extensions/index.md",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/index.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/content.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/dev/style.scss",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/content-page.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme-child/js/app.js",
+		"/Users/scottopolis/Graphic Art/AppPresser/apppresser.com/docs/extensions/apppush/index.md",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/single.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/content-below_post.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appfbconnect/appfbconnect.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appswiper/inc/Swiper_Shortcodes.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/rtl.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/inc/AppPresser_Notifications_CPT.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/inc/AppPresser_Notifications_Settings.php",
+		"/Users/scottopolis/Graphic Art/AppPresser/apppresser.com/docs/resources/index.md",
+		"/Users/scottopolis/Graphic Art/AppPresser/apppresser.com/docs/resources/community_snippets.md",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/js/ios/cordova_plugins.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/js/ios/cordova.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/readme.txt",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/js/android/cordova_plugins.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/appp-custom-cordova.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/js/scan-barcode.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/js/barcode-scanner.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appfbconnect/js/cordova_plugins.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appfbconnect/js/cordova.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/pg/3.6.3/ios/cordova_plugins.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/cordova.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appp-custom-cordova-files/js/android/cordova.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/pg/3.6.3/ios/cordova.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/content-archive.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/codekit-config.json",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/js/pushwoosh.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/appbuddy.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush/js/appp-cordova-push.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/inc/AppPresser_Ajax_Extras.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/inc/classes/AppPresser_App_Functionality.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/inc/AppBuddy_Ajax.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/inc/AppBuddy_Template_Stack.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/inc/js/appbuddy.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/templates/login.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/inc/AppPresser_Admin_Settings.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/inc/plugin-updater.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/inc/AppPresser_Theme_Switcher.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme/inc/classes/AppPresser_Extra_Functionality.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-build/js/controllers/controllers.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_Admin_Customizations.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_PG_Build.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/js/admin-scripts.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_PGB_API.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/api/AppPresser_Reactor_Preview.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/api/v1/AppPresser_Reactor_API.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_CMB.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_Membership_Limits.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/AppPresser-Reactor.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/app.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/app.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/lib/cmb/includes/CMB2_hookup.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_CPT.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/css/admin-style.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_App_Setup_Wizard_New.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/js/directives/map-directive.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/css/magnific-popup.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_AWS.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/components/card.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/css/style.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/components/default2.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/views/components/default2.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/css/style.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/js/controllers/detail-controller.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/js/directives/map-directive.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/css/dark.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/css/dark.css",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/js/controllers/controllers.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/views/components/card.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/js/magnific-popup.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/js/controllers/controllers.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/views/components/cardlist.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/components/cardlist.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_Security.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/templates/loginmodal.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/index.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/js/controllers/page-controller.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/js/controllers/detail-controller.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/lib/pg/pg-analytics.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/index.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/lib/pg/pg-analytics.js",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/templates/menu.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/components/search.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/views/components/search.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/AppPresser_Reactor_New_Site.php",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/app/views/components/product.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/views/components/product.html",
+		"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-power-plant/inc/build-files/js/factory/data-factory.js"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme",
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser",
+			"",
+			"\\",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme",
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/themes/apptheme",
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppresser/pg",
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appwoo",
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/appbuddy/templates/buddypress",
+			"",
+			"/Users/scottopolis/Documents/Websites/www.wp4.dev/wp-content/plugins/apppush",
+			"",
+			"dev/",
+			"",
+			"dev/",
+			"",
+			"dev/"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"commentct",
+			"detail",
+			"console.log",
+			"console",
+			"approve",
+			"todo",
+			"loadmo",
+			"data.",
+			"response",
+			"todo",
+			"comment",
+			"apppagectrl",
+			"$scope.site.url",
+			"$rootScope.site.username",
+			"item",
+			"Item",
+			"deleteC",
+			"Comment",
+			"site",
+			"users",
+			"slider",
+			"notification_send",
+			"appp_page_title",
+			"is_wc_version_gt",
+			"appp_filter",
+			"filter",
+			"my",
+			"apply_filt",
+			"appbuddy_modal_button",
+			"apply_fil",
+			"entry-ti",
+			"h1",
+			".post .entry",
+			"entry-t",
+			"h2",
+			"h1",
+			"saveToPhotoAlbum",
+			"loadAja",
+			"errorpath",
+			"get_title",
+			"appp_get_title",
+			"do_pag",
+			"appp_page_title",
+			"card-foo",
+			"map_image_added",
+			"geolocation_map_preview",
+			"after_ge",
+			"geolocation_map_preview",
+			"appp_map_preview_img",
+			"geolocation_map",
+			"map",
+			" Introduction",
+			"send_notification_message",
+			"messages_message_sent",
+			"send_notification_message",
+			"$content",
+			"appp_push_device_id",
+			"send_notification_message",
+			"$pg_version",
+			"get_devices_by_user_id",
+			"title",
+			"app.change_url",
+			"back",
+			"app",
+			"enqueu",
+			"ajax",
+			"APPP_KEY",
+			"photo_upload_key",
+			"EDD_SL_Theme_Updater",
+			"theme_slug",
+			"item_name",
+			"version",
+			"EDD_SL_Theme_Updater",
+			"e.u",
+			"e",
+			"notification_send",
+			"$content",
+			"appp_push_cpt_args",
+			"$this->directory_url ",
+			"scripts_styles",
+			"findCordovaPath",
+			"cordova_plug",
+			"featured",
+			"ie.scss",
+			"event",
+			"app.loadAjaxContent",
+			"notification_send",
+			"psw-rsp",
+			"$('.psw-rsp')",
+			"get_new_password",
+			"$('.reset-code-rsp')",
+			"code-rsp",
+			"code",
+			"$('#reset-code').val()",
+			"#code",
+			"#app-p",
+			"$('#app-pwr').val()",
+			"$('#app-pw').val()",
+			"pw",
+			"pwr",
+			"pw",
+			"change-password",
+			"appp_validate_password_code",
+			"appbuddy_lost_password_modal_template",
+			"appp_lost_password_template",
+			"appbuddy_lost_password_modal_template",
+			"lost-pas",
+			"hash",
+			"error_log",
+			"validat",
+			"$this->",
+			"wp_ajax",
+			"get_error_param",
+			"appp_reset_p",
+			"app_lost_password",
+			"appp_reset_password",
+			"is_app",
+			"fb_login_user",
+			"appp_wp_fblogin",
+			".ajax",
+			"app_lost_password",
+			"appp_reset_password",
+			"lost_password",
+			"password",
+			"validate_password",
+			"appp_reset_password",
+			"lost_password",
+			"#email"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"AppGeolocation",
+			"apppresser-push",
+			"AppPresser",
+			"AppPresser Theme",
+			", 'appp'",
+			"appp_"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "www/templates/add-site-modal.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1129,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								395,
+								395
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "wp-app.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 45,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								34,
+								34
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "www/templates/single-post.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 775,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								151,
+								151
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "www/templates/single-apppage.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 885,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								37,
+								37
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "www/templates/site-section-details.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 885,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								211,
+								271
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "www/templates/site-section.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 915,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								336,
+								336
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "www/css/style.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1259,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1259
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 723.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "www/templates/single-comment.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 937,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								514,
+								514
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 28.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "wp-app.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"api",
+				"inc/api/v1/AppPresser_Reactor_API.php"
+			],
+			[
+				"custom.j",
+				"themes/apppresser/js/custom.js"
+			],
+			[
+				"theme",
+				"apppresser-core/inc/theme-switcher.php"
+			],
+			[
+				"woo",
+				"apppresser-woocommerce/css/woocommerce.css"
+			],
+			[
+				"idang",
+				"apppresser-swipers/js/idangerous.swiper-2.2.js"
+			],
+			[
+				"cust",
+				"themes/apppresser/js/custom.js"
+			],
+			[
+				"woocom",
+				"apppresser-woocommerce/js/woocommerce.js"
+			],
+			[
+				"he",
+				"themes/apppresser/header.php"
+			],
+			[
+				"hea",
+				"themes/apppresser/header.php"
+			],
+			[
+				"func",
+				"themes/apppresser/functions.php"
+			],
+			[
+				"wooscss",
+				"apppresser-woocommerce/dev/woocommerce.scss"
+			],
+			[
+				"woocom.",
+				"apppresser-woocommerce/inc/woocom.php"
+			],
+			[
+				"r-core",
+				"apppresser-core/inc/theme-switcher.php"
+			],
+			[
+				"appp-set",
+				"apppresser-camera/inc/appp-settings.php"
+			],
+			[
+				"camera",
+				"apppresser-camera/appp-camera.php"
+			],
+			[
+				"core/",
+				"apppresser-core/inc/theme-switcher.php"
+			],
+			[
+				"apppresser.php",
+				"apppresser-core/apppresser.php"
+			],
+			[
+				"custo",
+				"js/custom.js"
+			],
+			[
+				"plugins",
+				"js/plugins.js"
+			],
+			[
+				"id",
+				"dev/idangerous.swiper.scss"
+			],
+			[
+				"fo",
+				"footer.php"
+			],
+			[
+				"st",
+				"style.css"
+			],
+			[
+				"app",
+				"inc/app-functionality.php"
+			],
+			[
+				"foo",
+				"footer.php"
+			],
+			[
+				"va",
+				"dev/bootstrap/_variables.scss"
+			],
+			[
+				"fron",
+				"page-front-page.php"
+			],
+			[
+				"fu",
+				"functions.php"
+			],
+			[
+				"cu",
+				"js/custom.js"
+			],
+			[
+				"sty",
+				"dev/style.scss"
+			],
+			[
+				"stru",
+				"dev/structure.scss"
+			],
+			[
+				"h",
+				"header.php"
+			],
+			[
+				"inc",
+				"inc/extras.php"
+			],
+			[
+				"in",
+				"index.php"
+			],
+			[
+				"sin",
+				"single.php"
+			],
+			[
+				"scss",
+				"dev/style.scss"
+			],
+			[
+				"js",
+				"js/custom.js"
+			],
+			[
+				"bas",
+				"dev/base.scss"
+			],
+			[
+				"head",
+				"dev/header-nav.scss"
+			],
+			[
+				".scss",
+				"dev/structure.scss"
+			],
+			[
+				"con",
+				"content.php"
+			],
+			[
+				"pag",
+				"page.php"
+			],
+			[
+				"side",
+				"sidebar.php"
+			],
+			[
+				"fun",
+				"functions.php"
+			],
+			[
+				"heade",
+				"dev/header-nav.scss"
+			],
+			[
+				"ind",
+				"index.php"
+			],
+			[
+				"styl",
+				"dev/style.scss"
+			],
+			[
+				"cus",
+				"dev/custom.scss"
+			],
+			[
+				"subl",
+				"dev/jqmobile-theme.sublime-project"
+			],
+			[
+				"",
+				"style.css"
+			],
+			[
+				"custom",
+				"dev/custom.scss"
+			],
+			[
+				"style",
+				"dev/style.scss"
+			],
+			[
+				"inde",
+				"index.php"
+			],
+			[
+				"jq",
+				"dev/jqmobile-flatui.scss"
+			],
+			[
+				"struc",
+				"dev/structure.scss"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "bu",
+		"selected_items":
+		[
+			[
+				"bu",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-build/reactor-build.sublime-project"
+			],
+			[
+				"",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-push/reactor-push.sublime-project"
+			],
+			[
+				"cor",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-core/reactor-core.sublime-project"
+			],
+			[
+				"co",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-core/reactor-core.sublime-project"
+			],
+			[
+				"rea",
+				"~/Documents/Websites/www.wp4.dev/wp-content/themes/reactor-site-theme/reactor-site-theme.sublime-project"
+			],
+			[
+				"buil",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-build/reactor-build.sublime-project"
+			],
+			[
+				"b",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-build/reactor-build.sublime-project"
+			],
+			[
+				"app",
+				"/Applications/MAMP/htdocs/apppresser.com/wp-content/apppresser.com.sublime-project"
+			],
+			[
+				"bui",
+				"~/Documents/Websites/www.wp4.dev/wp-content/plugins/reactor-build/reactor-build.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 344.0,
+	"status_bar_visible": false,
+	"template_settings":
+	{
+	}
+}

@@ -1,0 +1,12 @@
+<a class="item card" ng-click="postCardCtrl.onClick()">
+  <div class="item">
+    <h2 ng-bind-html="postCardCtrl.post.title.rendered"></h2>
+  </div>
+  <div class="item item-image">
+    <img ng-if="postCardCtrl.post.featured_image_urls.medium" ng-src="{{postCardCtrl.post.featured_image_urls.medium}}" img-cache/>
+  </div>
+  <div class="item item-body">
+    <p ng-if="postCardCtrl.post.excerpt.rendered" ng-bind-html="postCardCtrl.post.excerpt.rendered"></p>
+    <p ng-if="!postCardCtrl.post.excerpt.rendered" ng-bind-html="postCardCtrl.post.content.rendered"></p>
+  </div>
+</a>

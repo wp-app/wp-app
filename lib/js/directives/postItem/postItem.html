@@ -1,0 +1,7 @@
+<a class="item item-icon-right" ng-class="::postItemCtrl.classes" ng-click="postItemCtrl.onClick()">
+  <img ng-if="::postItemCtrl.showImg && postItemCtrl.post.featured_image_urls.thumbnail" ng-src="{{postItemCtrl.post.featured_image_urls.thumbnail}}" img-cache />
+  <h2 ng-bind-html="postItemCtrl.post.title.rendered"></h2>
+  <p ng-if="postItemCtrl.post.excerpt.rendered" ng-bind-html="postItemCtrl.post.excerpt.rendered"></p>
+  <p ng-if="!postItemCtrl.post.excerpt.rendered" ng-bind-html="postItemCtrl.post.content.rendered"></p>
+  <i class="icon ion-ios-arrow-right"></i>
+</a>

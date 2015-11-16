@@ -1,0 +1,37 @@
+<div>
+	<button class="button button-positive button-block" ng-click="uploadPhotoCtrl.open()">Voeg uw foto</button>
+	
+	<script id="my-modal.html" type="text/ng-template">
+		<ion-modal-view>
+		  <ion-header-bar>
+		    <h1 class="title">Upload an image</h1>
+		    <div class="buttons close-button">
+		      <button class="button button-clear" ng-click="uploadPhotoCtrl.close()">Close</button>
+		    </div>
+		  </ion-header-bar>
+		  <ion-content class="has-footer padding">
+		  	<div ng-if="!image">
+			  	<h2 align="center">Choose a photo</h2>
+			    <div class="button-bar">
+				    <button class="button button-positive icon-left ion-camera" ng-click="uploadPhotoCtrl.getImage(1)">Neem foto</button>
+				    <button class="button button-positive icon-left ion-images" ng-click="uploadPhotoCtrl.getImage(2)">{{'uploadPhoto.gallery' | translate}}</button>
+				</div>
+			</div>
+			<div class="list" ng-if="image">
+				<label class="item item-input">
+					<textarea id="photo-description" ng-model="fields.photoDescription" placeholder="Enter a description (optional)"></textarea>
+				</label>
+				<div class="item">
+					<img ng-src="{{image}}" />
+				</div>
+			
+				<button class="button button-full button-positive" ng-click="uploadPhotoCtrl.upload()">
+			      Upload
+			    </button>
+			    <p align="center" ng-click="uploadPhotoCtrl.reset()">Choose new image</p>
+		    </div>
+		  </ion-content>
+		</ion-modal-view>
+	</script>
+
+</div>

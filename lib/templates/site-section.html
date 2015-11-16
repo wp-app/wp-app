@@ -1,0 +1,31 @@
+<!-- js/controllers.js 'SiteSectionCtrl' -->
+<ion-view>
+
+	<ion-nav-title>
+	{{slug}}
+	</ion-nav-title>
+
+  	<ion-content>
+
+  		<ion-refresher on-refresh="doRefresh()"></ion-refresher>
+
+		<ion-list>
+			<ion-item class="item-icon-right" ng-repeat="item in data" href="#/app/sites/{{siteID}}/{{slug}}/{{item.id}}">
+				<h2 ng-bind-html="item.title.rendered"></h2>
+				<p ng-if="item.excerpt.rendered" ng-bind-html="item.excerpt.rendered"></p>
+				<p ng-if="item.author_name" ng-bind-html="item.content.rendered"></p>
+				<p ng-if="item.author_name" ng-bind-html="item.author_name"></p>
+				<span class="pending-item-text" ng-if="item.status == 'hold'">Pending Moderation</span>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+
+		<ion-infinite-scroll
+			ng-if="moreDataExists()"
+			on-infinite="loadMore()"
+			distance="1%">
+		</ion-infinite-scroll>
+
+    </ion-content>
+
+</ion-view>

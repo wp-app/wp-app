@@ -139,10 +139,30 @@ The first step is just to make some plans, then write them out and assign them.
 
 ### Setup this project locally
 
-1. [Install Ionic CLI tools](http://ionicframework.com/docs/cli/install.html): `npm install -g ionic`
-2. Create your Ionic project: `ionic start wp-app`
-3. Change directory into the "wp-app" folder: `cd wp-app`
-3. Remove the "www" folder
-3. Clone this repo into a new "www" folder: `git clone http://github.com/wp-app/wp-app.git www`
-4. Build your app: `ionic build ios`
-5. Test in browser: `ionic serve --lab`
+Requirements:
+
+- Ionic CLI tools `npm install -g ionic`
+- Node/npm http://blog.npmjs.org/post/85484771375/how-to-install-npm
+
+1. `git clone http://github.com/wp-app/wp-app.git`
+2. `cd wp-app`
+3. `npm install`
+4. `ionic state restore`
+
+*To test in browser:*
+
+`npm run devserver`
+
+Navigate to http://localhost:8080/webpack-dev-server/
+
+*Install on your device:*
+
+`npm run runIosDevice`
+
+`npm run runAndroid`
+
+*Build the project*
+
+`npm run dumpdev`
+
+`npm run dumpprod`
